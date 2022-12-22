@@ -22,7 +22,7 @@ $database = new PDO($config['database_path']);
 
 // Load a celendar
 // require('/vendor/benhall14/php-calendar/src/phpCalendar/Calendar.php');
-require 'vendor/autoload.php';
+require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/vendor/autoload.php';
 
 use benhall14\phpCalendar\Calendar as Calendar;
 
