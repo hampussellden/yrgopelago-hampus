@@ -49,3 +49,4 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
         $stmt->execute();
     }
 }
+header('location: http://localhost:4000/app/events.php');
