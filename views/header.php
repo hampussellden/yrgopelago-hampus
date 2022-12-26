@@ -23,4 +23,3 @@
     <div class="wrapper">
         <?php
         require 'navigation.php';
-        ?>
