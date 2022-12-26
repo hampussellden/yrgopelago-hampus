@@ -11,7 +11,7 @@ $transferCode = htmlspecialchars(trim($_POST['transferCode']), ENT_QUOTES);
 try {
     $response = $client->request('POST', 'https://www.yrgopelago.se/centralbank/transferCode', [
         'form_params' => [
-            'transferDode' => $transferCode,
+            'transferDode' => $transferCode
 
         ]
     ]);
