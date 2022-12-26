@@ -7,16 +7,15 @@ use GuzzleHttp\Client;
 $client = new Client();
 $transferCode = $_POST['transferCode'];
 try {
-    $response = $client->request('POST', 'https://www.yrgopelago.se/centralbank/transferCode', [
+    $response = $client->post('https://www.yrgopelago.se/centralbank/transferCode', [
         'form_params' => [
             'transferCode' => $transferCode,
             'totalcost' => 10
         ]
     ]);
-    echo '<pre>';
     die(var_dump($response->getBody()->getContents()));
 } catch (Exception $e) {
-    echo 'nåt gick snett';
+    echo 'something went wrong!';
 }
 
 
