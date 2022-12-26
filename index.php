@@ -4,16 +4,17 @@ require 'views/header.php';
 ?>
 <div class="calender-container">
     <div class="col-xs-12 col-sm-6 col-md-4">
-        <?php require 'app/posts/export/budgetEvents.php'; ?>
-        <?php $calendar->addEvents($events); ?>
-        <?php echo $calendar->draw(date('2023-1-1'), 'grey'); ?>
+        <?php require 'app/posts/budgetEvents.php'; ?>
+        <?php
+        $calendar->addEvents($events);
+        echo $calendar->draw(date('2023-1-1'), 'grey'); ?>
 
         <hr />
 
     </div>
 </div>
 
-<form action="app/posts/import/booking.php" method="post">
+<form action="app/posts/booking.php" method="post">
 
     <input type="text" id="transferCode" name="transferCode">
     <label for="transferCode">Transfer Code</label>
