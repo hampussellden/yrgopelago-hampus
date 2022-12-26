@@ -2,21 +2,19 @@
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/app/autoload.php';
 
 //check if a transfercode is legit and not used
-
-
 use GuzzleHttp\Client;
 
 $client = new Client();
-$transferCode = htmlspecialchars(trim($_POST['transferCode']), ENT_QUOTES);
+$transferCode = $_POST['transferCode'];
 try {
     $response = $client->request('POST', 'https://www.yrgopelago.se/centralbank/transferCode', [
         'form_params' => [
-            'transferDode' => $transferCode
-
+            'transferCode' => $transferCode,
+            'totalcost' => 10
         ]
     ]);
     echo '<pre>';
-    var_dump($response->getBody()->getContents());
+    die(var_dump($response->getBody()->getContents()));
 } catch (Exception $e) {
     echo 'nåt gick snett';
 }

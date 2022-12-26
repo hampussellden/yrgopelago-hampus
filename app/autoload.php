@@ -29,9 +29,3 @@ use benhall14\phpCalendar\Calendar as Calendar;
 
 $calendar = new Calendar();
 $calendar->useMondayStartingDate();
-
-//use and load dotenv
-use Dotenv\Dotenv;
-
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
