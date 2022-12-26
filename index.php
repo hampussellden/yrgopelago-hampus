@@ -13,7 +13,7 @@ require 'views/header.php';
     </div>
 </div>
 
-<form action="app/posts/import/booking.php" method="post">
+<form action="app/posts/booking.php" method="post">
 
     <input type="text" id="transferCode" name="transferCode">
     <label for="transferCode">Transfer Code</label>

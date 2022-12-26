@@ -1,8 +1,29 @@
 <?php
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/app/autoload.php';
 
+//check if a transfercode is legit and not used
+
+
+use GuzzleHttp\Client;
+
+$client = new Client();
+$transferCode = htmlspecialchars(trim($_POST['transferCode']), ENT_QUOTES);
+try {
+    $response = $client->request('POST', 'https://www.yrgopelago.se/centralbank/transferCode', [
+        'form_params' => [
+            'transferDode' => $transferCode,
+
+        ]
+    ]);
+    echo '<pre>';
+    var_dump($response->getBody()->getContents());
+} catch (Exception $e) {
+    echo 'nåt gick snett';
+}
+
+
+
 if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST['departure'])) {
-    $transferCode = htmlspecialchars(trim($_POST['transferCode']), ENT_QUOTES);
     $guest = htmlspecialchars(trim($_POST['guestName']), ENT_QUOTES);
     $arrival = $_POST['arrival'];
     $departure = $_POST['departure'];
