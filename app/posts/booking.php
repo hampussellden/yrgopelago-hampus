@@ -27,21 +27,23 @@ try {
         $codeCheck = true;
     }
 } catch (Exception $e) {
-    echo 'something went wrong!';
+    echo 'something went wrong with the transfer code check';
 }
 
 if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST['departure']) && $codeCheck === true) {
+
     $guestName = ucfirst(strtolower(htmlspecialchars(trim($_POST['guestName']), ENT_QUOTES)));
     $arrival = $_POST['arrival'];
     $departure = $_POST['departure'];
     $roomId = $_POST['roomId'];
+
     // make a look up if guest name already exists in guests table, if not, create a new one and use that
     try {
         $stmt = $database->prepare('SELECT id from guests where name=:guest_name');
         $stmt->bindParam(':guest_name', $guestName, PDO::PARAM_STR);
         $stmt->execute();
-        $guestID = $stmt->fetch();
-        if (empty($guestID)) {
+        $guestIdArr = $stmt->fetch(); //Will return as an array if a name is found, as a boolean if not
+        if (is_bool($guestIdArr)) {
             //insert the new guests info into guests table
             $stmt = $database->prepare('INSERT INTO guests (name) VALUES (:guest_name)');
             $stmt->bindParam(':guest_name', $guestName, PDO::PARAM_STR);
@@ -51,12 +53,13 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
             $stmt->bindParam(':guest_name', $guestName, PDO::PARAM_STR);
             $stmt->execute();
             $guestId = $stmt->fetch();
+            die(var_dump($guestId));
         } else {
-            //only used if returning guest, use the found id in the statement from our earlier query to be used later
-            $guestId = $stmt->fetch();
+
+            $guestId = $guestIdArr['id'];
         }
     } catch (Exception $e) {
-        echo 'something went wrong!';
+        echo 'something went wrong with the guest id check';
     }
     //Prepare statement to add the new booking to SQLite database
     $stmt = $database->prepare('INSERT INTO bookings (guest_id, start_date, end_date, room_id, transfer_code)
@@ -66,7 +69,7 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
     $stmt->bindParam(':start_date', $arrival, PDO::PARAM_STR);
     $stmt->bindParam(':end_date', $departure, PDO::PARAM_STR);
     $stmt->bindParam(':room_id', $roomId, PDO::PARAM_INT);
-    $stmt->bindParam(':transfer_code', $transferCode, PDO::PARAM_STR);
+    $stmt->bindParam(':transfer_code', $validCode, PDO::PARAM_STR);
     $stmt->execute();
 
     //Possible improvements? Make the $_POST items an array, then filter away the null values, instead of checking every one of them. That might help if we want to have different amounts of features for different rooms
@@ -81,18 +84,20 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
     if (!empty($_POST['featureThree'])) {
         $features[] = $_POST['featureThree'];
     }
-    //Get the booking id of the booking we just created
-    $stmt = $database->prepare('SELECT id FROM bookings where transfer_code=:transfer_code');
-    $stmt->bindParam(':transfer_code', $transferCode, PDO::PARAM_STR);
-    $stmt->execute();
-    $booking_id = $stmt->fetch();
-    //loop through the chosen features and add them to the pivot table booking_to_feature
-    foreach ($features as $feature) {
-        $stmt = $database->prepare('INSERT INTO booking_to_feature (booking_id, feature_id) VALUES (:booking_id, :feature_id);');
-        $feature_id = (int)$feature;
-        $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
-        $stmt->bindParam(':feature_id', $feature_id, PDO::PARAM_INT);
+    if (!empty($features)) {
+        //Get the booking id of the booking we just created
+        $stmt = $database->prepare('SELECT id FROM bookings where transfer_code=:transfer_code');
+        $stmt->bindParam(':transfer_code', $validCode, PDO::PARAM_STR);
         $stmt->execute();
+        $booking_id = $stmt->fetch();
+        //loop through the chosen features and add them to the pivot table booking_to_feature
+        foreach ($features as $feature) {
+            $stmt = $database->prepare('INSERT INTO booking_to_feature (booking_id, feature_id) VALUES (:booking_id, :feature_id);');
+            $feature_id = (int)$feature;
+            $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+            $stmt->bindParam(':feature_id', $feature_id, PDO::PARAM_INT);
+            $stmt->execute();
+        }
     }
+    header('location: http://localhost:4000/app/events.php');
 }
-header('location: http://localhost:4000/app/events.php');
