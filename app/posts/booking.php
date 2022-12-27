@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 
 $client = new Client();
 $transferCode = $_POST['transferCode'];
+header('content-type: application/json');
 try {
     $response = $client->post('https://www.yrgopelago.se/centralbank/transferCode', [
         'form_params' => [
@@ -13,21 +14,28 @@ try {
             'totalcost' => 10
         ]
     ]);
-    die(var_dump($response->getBody()->getContents()));
+    $response = json_decode($response->getBody()->getContents());
+    if (!$response->error) {
+        $validCode = $response->transferCode;
+        $response = $client->post('https://www.yrgopelago.se/centralbank/deposit', [
+            'form_params' => [
+                'user' => 'Hampus',
+                'transferCode' => $validCode
+            ]
+        ]);
+    }
 } catch (Exception $e) {
     echo 'something went wrong!';
 }
-
-
 
 if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST['departure'])) {
     $guest = htmlspecialchars(trim($_POST['guestName']), ENT_QUOTES);
     $arrival = $_POST['arrival'];
     $departure = $_POST['departure'];
-    $room_id = $_POST['roomId'];
+    $roomId = $_POST['roomId'];
     // make a look up if guest name already exists in guests table, if not, create a new one and use that
-    //
-    //
+    $stmt = $database->prepare('SELECT ');
+
     $guestId = 1; //only an example for now.
 
     //Prepare statement to add the new booking to SQLite database
@@ -37,7 +45,7 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
     $stmt->bindParam(':guest_id', $guestId, PDO::PARAM_INT);
     $stmt->bindParam(':start_date', $arrival, PDO::PARAM_STR);
     $stmt->bindParam(':end_date', $departure, PDO::PARAM_STR);
-    $stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+    $stmt->bindParam(':room_id', $roomId, PDO::PARAM_INT);
     $stmt->bindParam(':transfer_code', $transferCode, PDO::PARAM_STR);
     $stmt->execute();
 
