@@ -2,3 +2,4 @@ node_modules
 vendor
 .env
 .DS_store
+.DS_Store

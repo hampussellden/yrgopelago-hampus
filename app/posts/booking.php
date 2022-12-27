@@ -15,7 +15,8 @@ try {
         ]
     ]);
     $response = json_decode($response->getBody()->getContents());
-    if (!$response->error) {
+    //Deposit into my account
+    if (property_exists($response, 'transferCode')) {
         $validCode = $response->transferCode;
         $response = $client->post('https://www.yrgopelago.se/centralbank/deposit', [
             'form_params' => [
@@ -23,21 +24,40 @@ try {
                 'transferCode' => $validCode
             ]
         ]);
+        $codeCheck = true;
     }
 } catch (Exception $e) {
     echo 'something went wrong!';
 }
 
-if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST['departure'])) {
-    $guest = htmlspecialchars(trim($_POST['guestName']), ENT_QUOTES);
+if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST['departure']) && $codeCheck === true) {
+    $guestName = ucfirst(strtolower(htmlspecialchars(trim($_POST['guestName']), ENT_QUOTES)));
     $arrival = $_POST['arrival'];
     $departure = $_POST['departure'];
     $roomId = $_POST['roomId'];
     // make a look up if guest name already exists in guests table, if not, create a new one and use that
-    $stmt = $database->prepare('SELECT ');
-
-    $guestId = 1; //only an example for now.
-
+    try {
+        $stmt = $database->prepare('SELECT id from guests where name=:guest_name');
+        $stmt->bindParam(':guest_name', $guestName, PDO::PARAM_STR);
+        $stmt->execute();
+        $guestID = $stmt->fetch();
+        if (empty($guestID)) {
+            //insert the new guests info into guests table
+            $stmt = $database->prepare('INSERT INTO guests (name) VALUES (:guest_name)');
+            $stmt->bindParam(':guest_name', $guestName, PDO::PARAM_STR);
+            $stmt->execute();
+            //pull the newly added guests id into a variable to be used later
+            $stmt = $database->prepare('SELECT id FROM guests where name=:guest_name');
+            $stmt->bindParam(':guest_name', $guestName, PDO::PARAM_STR);
+            $stmt->execute();
+            $guestId = $stmt->fetch();
+        } else {
+            //only used if returning guest, use the found id in the statement from our earlier query to be used later
+            $guestId = $stmt->fetch();
+        }
+    } catch (Exception $e) {
+        echo 'something went wrong!';
+    }
     //Prepare statement to add the new booking to SQLite database
     $stmt = $database->prepare('INSERT INTO bookings (guest_id, start_date, end_date, room_id, transfer_code)
     VALUES (:guest_id, :start_date, :end_date, :room_id, :transfer_code);
