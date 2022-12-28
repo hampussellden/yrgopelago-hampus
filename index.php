@@ -10,8 +10,9 @@ $calendar = new Calendar();
 $calendar->useMondayStartingDate();
 require 'app/posts/budgetEvents.php';
 $calendar->addEvents($events);
-
+$roomId = 1;
 //Get the features for this room
+$features = getRoomFeatures($roomId);
 ?>
 <div class="calender-container">
     <div class="col-xs-12 col-sm-6 col-md-4">
@@ -35,14 +36,10 @@ $calendar->addEvents($events);
     <input type="date" id="departure" name="departure" min="2023-01-01" max="2023-01-31">
     <label for="departure">Departure</label>
 
-    <input type="checkbox" value="1" id="featureOne" name="features[0]">
-    <label for="featureOne">Feature #1 $4</label>
-
-    <input type="checkbox" value="2" id="featureTwo" name="features[1]">
-    <label for="featureTwo">Feature #2 $8</label>
-
-    <input type="checkbox" value="3" id="featureThree" name="features[2]">
-    <label for="featureThree">Feature #3 $12</label>
+    <?php foreach ($features as $feature) : ?>
+        <input type="checkbox" value="<?= $feature['id'] ?>" id="<?= $feature['name'] ?>" name="features[0]">
+        <label for="<?= $feature['name'] ?>"><?= $feature['name'] . ' $' . $feature['cost'] ?></label>
+    <?php endforeach ?>
 
     <input type="hidden" value="1" name="roomId">
 

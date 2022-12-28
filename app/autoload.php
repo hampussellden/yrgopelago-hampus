@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 // Start the session engines.
-session_start();
+// session_start();
 
 // Set the default timezone to Coordinated Universal Time.
 date_default_timezone_set('UTC');
@@ -19,4 +19,4 @@ $database = new PDO($config['database_path']);
 $database->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 // Include the helper functions.
-require __DIR__ . '/functions.php';
+require_once __DIR__ . '/functions.php';
