@@ -1,5 +1,43 @@
 <?php
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/app/autoload.php';
+
+//Count the totalcost that the form should equal to.
+$features = $_POST['features'];
+$roomId = $_POST['roomId'];
+if (isset($_POST['arrival'], $_POST['departure'])) {
+    $monthStart = 1672531200; //unix for Jan 2023 start
+    $monthEnd = 1675209599; //uxin for Jan 2023 end
+    $unixDay = 86400; //seconds in a day
+    //Will give us the exact day of the arrival in the form of an INT
+    $arrivalDay = ((strtotime($_POST['arrival']) - $monthStart) / $unixDay) + 1;
+    $departureDay = ((strtotime($_POST['departure']) - $monthStart) / $unixDay) + 1;
+    $totalNightsStayed = $departureDay - $arrivalDay;
+    $discount = 0;
+    if ($totalNightsStayed === 0) {
+        $totalNightsStayed = 1; //Day visit will cost the same as 1 night
+    } else if ($totalNightsStayed = 4) {
+        $discount = $discount + 3;
+    }
+    // a discount for chosing 2 features
+    if (count($features) === 2) {
+        $discount = $discount + 2;
+    }
+    //calculate the cost for the room
+    switch ($roomId) {
+        case 1:
+            $costPerNight = 2;
+            break;
+        case 2:
+            $costPerNight = 4;
+            break;
+        case 3:
+            $costPerNight = 8;
+            break;
+    }
+    $featureCost = 0; //Will make a
+    $totalCost = (($totalNightsStayed * $costPerNight) + $featureCost) - $discount;
+}
+
 //check if a transfercode is legit and not used
 use GuzzleHttp\Client;
 
@@ -10,10 +48,11 @@ try {
     $response = $client->post('https://www.yrgopelago.se/centralbank/transferCode', [
         'form_params' => [
             'transferCode' => $transferCode,
-            'totalcost' => 10
+            'totalcost' => $totalCost
         ]
     ]);
     $response = json_decode($response->getBody()->getContents());
+    die(var_dump($response));
     //Deposit into my account
     if (property_exists($response, 'transferCode')) {
         $validCode = $response->transferCode;
@@ -34,7 +73,6 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
     $guestName = ucfirst(strtolower(htmlspecialchars(trim($_POST['guestName']), ENT_QUOTES)));
     $arrival = $_POST['arrival'];
     $departure = $_POST['departure'];
-    $roomId = $_POST['roomId'];
 
     // make a look up if guest name already exists in guests table, if not, create a new one and use that
     try {
@@ -74,7 +112,6 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
     //Possible improvements? Make the $_POST items an array, then filter away the null values, instead of checking every one of them. That might help if we want to have different amounts of features for different rooms
     //We can get the features as an array directly from the form with some clever HTML. Then we can loop through it and non checked features wont show up at all.
     // if the booking has features chosen, import those to the booking_to_feature table
-    $features = $_POST['features'];
     if (!empty($features)) {
         //Get the booking id of the booking we just created
         $stmt = $database->prepare('SELECT id FROM bookings where transfer_code=:transfer_code');
@@ -91,5 +128,24 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
             $stmt->execute();
         }
     }
-    header('location: http://localhost:4000/app/events.php');
+    $bookingMade = true;
+}
+if ($bookingMade === true) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+    $islandName = $_ENV['ISLAND_NAME'];
+    $hotelName = $_ENV['HOTEL_NAME'];
+    $stars = $_ENV['STARS'];
+    header('content-type: application/json');
+    $bookingInfo = [
+        'island' => $islandName,
+        'hotel' => $hotelName,
+        'arrival_date' => $arrival,
+        'departure_date' => $departure,
+        'total_cost' => $cost,
+        'stars' => $stars,
+        'features' => [$features],
+        'additional_info' => ''
+    ];
+    echo json_encode($bookingInfo);
 }

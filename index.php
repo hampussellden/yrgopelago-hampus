@@ -1,14 +1,21 @@
 <?php
 require 'app/autoload.php';
 require 'views/header.php';
+// Load a celendar
+require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/vendor/autoload.php';
+
+use benhall14\phpCalendar\Calendar as Calendar;
+
+$calendar = new Calendar();
+$calendar->useMondayStartingDate();
+require 'app/posts/budgetEvents.php';
+$calendar->addEvents($events);
+
+//Get the features for this room
 ?>
 <div class="calender-container">
     <div class="col-xs-12 col-sm-6 col-md-4">
-        <?php require 'app/posts/budgetEvents.php'; ?>
-        <?php
-        $calendar->addEvents($events);
-        echo $calendar->draw(date('2023-1-1'), 'grey'); ?>
-
+        <?php echo $calendar->draw(date('2023-1-1'), 'grey'); ?>
         <hr />
 
     </div>
