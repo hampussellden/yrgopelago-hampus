@@ -46,12 +46,6 @@ if (isset($_POST['arrival'], $_POST['departure'])) {
 use GuzzleHttp\Client;
 
 $client = new Client();
-// [
-// // Base URI is used with relative requests
-// 'base_uri' => 'https://www.yrgopelago.se/centralbank/',
-// // You can set any number of default request options.
-// 'timeout'  => 2.0,]
-
 
 //check if a transfercode is legit and not used
 $transferCode = $_POST['transferCode'];
@@ -153,8 +147,8 @@ if ($bookingMade === true) {
         'departure_date' => $departure,
         'total_cost' => $totalCost,
         'stars' => $stars,
-        'features' => 'featuresarray',
-        'additional_info' => ''
+        'features' => 'featuresarray', //Make an array with features and there costs here
+        'additional_info' => '' //maybe include discounts here if there are any
     ];
     echo json_encode($bookingInfo);
 }
