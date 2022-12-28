@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+require 'app/events.php';
 
 $data = file_get_contents(__DIR__ . '/bookings.json');
 $data = json_decode($data, true);

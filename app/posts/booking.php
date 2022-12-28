@@ -1,6 +1,5 @@
 <?php
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/app/autoload.php';
-
 //check if a transfercode is legit and not used
 use GuzzleHttp\Client;
 
@@ -52,8 +51,8 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
             $stmt = $database->prepare('SELECT id FROM guests where name=:guest_name');
             $stmt->bindParam(':guest_name', $guestName, PDO::PARAM_STR);
             $stmt->execute();
-            $guestId = $stmt->fetch();
-            die(var_dump($guestId));
+            $guestIdResponse = $stmt->fetch();
+            $guestId = $guestIdResponse['id'];
         } else {
 
             $guestId = $guestIdArr['id'];
@@ -73,28 +72,21 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
     $stmt->execute();
 
     //Possible improvements? Make the $_POST items an array, then filter away the null values, instead of checking every one of them. That might help if we want to have different amounts of features for different rooms
+    //We can get the features as an array directly from the form with some clever HTML. Then we can loop through it and non checked features wont show up at all.
     // if the booking has features chosen, import those to the booking_to_feature table
-    $features = [];
-    if (!empty($_POST['featureOne'])) {
-        $features[] = $_POST['featureOne'];
-    }
-    if (!empty($_POST['featureTwo'])) {
-        $features[] = $_POST['featureTwo'];
-    }
-    if (!empty($_POST['featureThree'])) {
-        $features[] = $_POST['featureThree'];
-    }
+    $features = $_POST['features'];
     if (!empty($features)) {
         //Get the booking id of the booking we just created
         $stmt = $database->prepare('SELECT id FROM bookings where transfer_code=:transfer_code');
         $stmt->bindParam(':transfer_code', $validCode, PDO::PARAM_STR);
         $stmt->execute();
-        $booking_id = $stmt->fetch();
+        $bookingIdResponse = $stmt->fetch();
+        $bookingId = $bookingIdResponse['id'];
         //loop through the chosen features and add them to the pivot table booking_to_feature
         foreach ($features as $feature) {
             $stmt = $database->prepare('INSERT INTO booking_to_feature (booking_id, feature_id) VALUES (:booking_id, :feature_id);');
             $feature_id = (int)$feature;
-            $stmt->bindParam(':booking_id', $booking_id, PDO::PARAM_INT);
+            $stmt->bindParam(':booking_id', $bookingId, PDO::PARAM_INT);
             $stmt->bindParam(':feature_id', $feature_id, PDO::PARAM_INT);
             $stmt->execute();
         }
