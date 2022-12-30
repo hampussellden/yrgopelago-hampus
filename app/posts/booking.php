@@ -4,11 +4,6 @@ require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/vendor/aut
 
 if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST['departure'])) {
 }
-//load dotenv
-$dotenv = Dotenv\Dotenv::createImmutable("/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/");
-$dotenv->load();
-
-
 
 //Count the totalcost that the form should equal to.
 $chosenFeatures = $_POST['features'];
@@ -31,18 +26,43 @@ if (isset($_POST['arrival'], $_POST['departure'])) {
     //calculate the cost for the room
     switch ($roomId) {
         case 1:
-            $costPerNight = 2;
+            $costPerDay = 2;
             break;
         case 2:
-            $costPerNight = 4;
+            $costPerDay = 4;
             break;
         case 3:
-            $costPerNight = 8;
+            $costPerDay = 8;
             break;
     }
     $featureCost = 2; //Will make an array that takes the feature cost from the database
-    $totalCost = (($totalNightsStayed * $costPerNight) + $featureCost) - $discount;
+    $totalCost = (($totalDaysSpent * $costPerDay) + $featureCost) - $discount;
 }
+//create an array to use when when filling our database with booked dates
+$countDay = $arrivalDay;
+$chosenDays = [];
+do {
+    $chosenDays[] = $countDay;
+    $countDay++;
+} while ($countDay <= $departureDay);
+
+//Check dates so that the dates are available
+$stmt = $database->query('SELECT day_of_month FROM booked_days');
+$rawBookedDays = $stmt->fetchAll();
+foreach ($rawBookedDays as $day) {
+    $bookedDays[] = $day['day_of_month'];
+}
+
+//array_intersect looks for matches in the 2 (or more) provided arrays.
+
+$matchingDates = array_intersect($chosenDays, $bookedDays);
+if (!empty($matchingDates)) {
+    $errors[] = 'A date you have chosen is already booked by someone else';
+    header('location: http://localhost:4000/');
+    exit;
+}
+
+
 
 use GuzzleHttp\Client;
 
@@ -135,15 +155,6 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
     $bookingMade = true;
 }
 
-//create an array to use when when filling our database with booked dates
-if ($bookingMade === true) {
-    $countDay = $arrivalDay;
-    $chosenDays = [];
-    do {
-        $chosenDays[] = $countDay;
-        $countDay++;
-    } while ($countDay <= $departureDay);
-}
 
 //fill database with the booked days using the array $chosenDays
 if ($bookingMade === true) {
@@ -157,6 +168,9 @@ if ($bookingMade === true) {
 
 //Json response on succesful booking
 if ($bookingMade === true) {
+    //load dotenv
+    $dotenv = Dotenv\Dotenv::createImmutable("/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/");
+    $dotenv->load();
     $islandName = $_ENV['ISLAND_NAME'];
     $hotelName = $_ENV['HOTEL_NAME'];
     $stars = $_ENV['STARS'];
