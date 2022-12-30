@@ -5,27 +5,30 @@ require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/vendor/aut
 use GuzzleHttp\Client;
 
 $client = new Client();
+$_SESSION['errors'] = [];
 if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_POST['arrival']) && !empty($_POST['departure'])) {
-    if (isset($_POST['features'])) {
+    if (!empty($_POST['features'])) {
         $chosenFeatures = $_POST['features'];
     } else {
         $chosenFeatures = array();
     }
+    //variables to be used
     $roomId = $_POST['roomId'];
-    $monthStart = 1672531200; //unix for Jan 2023 start
-    $unixDay = 86400; //seconds in a day
-    $arrivalDay = ((strtotime($_POST['arrival']) - $monthStart) / $unixDay) + 1;
-    $departureDay = ((strtotime($_POST['departure']) - $monthStart) / $unixDay) + 1;
-    $discount = 0;
     $transferCode = $_POST['transferCode'];
     $guestName = ucfirst(strtolower(htmlspecialchars(trim($_POST['guestName']), ENT_QUOTES)));
     $arrival = $_POST['arrival'];
     $departure = $_POST['departure'];
 
+    $monthStart = 1672531200; //unix for Jan 2023 start
+    $unixDay = 86400; //seconds in a day
+    $discount = 0;
+    //Will give us the exact day of the arrival in the form of an INT
+    $arrivalDay = ((strtotime($_POST['arrival']) - $monthStart) / $unixDay) + 1;
+    $departureDay = ((strtotime($_POST['departure']) - $monthStart) / $unixDay) + 1;
+    $totalDaysSpent = ($departureDay - $arrivalDay) + 1;
+
 
     //Count the totalcost that the form should equal to.
-    //Will give us the exact day of the arrival in the form of an INT
-    $totalDaysSpent = ($departureDay - $arrivalDay) + 1;
     if ($totalDaysSpent === 4) {
         $discount = $discount + 3;
     }
@@ -64,14 +67,15 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
     foreach ($rawBookedDays as $day) {
         $bookedDays[] = $day['day_of_month'];
     }
-    if ($bookedDays === null) {
+    if (empty($bookedDays)) {
         $bookedDays = array();
     }
 
     //array_intersect looks for matches in the 2 (or more) provided arrays.
     $matchingDates = array_intersect($chosenDays, $bookedDays);
     if (!empty($matchingDates)) {
-        $errors[] = 'A date you have chosen is already booked by someone else';
+        $message = 'A date you have chosen is already booked by someone else';
+        array_push($_SESSION['errors'], $message);
         header('location: http://localhost:4000/');
         exit;
     }
@@ -95,8 +99,8 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
             ]);
             $codeCheck = true;
         } else {
-            $errors[] = 'The transfercode submited was not valid';
-            die(var_dump($_POST));
+            $message = 'The transfercode submited was not valid';
+            array_push($_SESSION['errors'], $message);
             header('location: http://localhost:4000/');
             exit;
         }
@@ -186,7 +190,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
     }
 } else {
     $message = 'Form was not filled in correctly';
-    array_push($_SESSION['myMessage'], $message);
+    array_push($_SESSION['errors'], $message);
     session_write_close();
     header('location: http://localhost:4000/');
     exit;

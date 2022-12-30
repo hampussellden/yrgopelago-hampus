@@ -15,7 +15,7 @@ $calendar->addEvents($events);
 $features = getRoomFeatures($roomId, $database);
 ?>
 <main>
-    <?php foreach ($_SESSION['myMessage'] as $error) : ?>
+    <?php foreach ($_SESSION['errors'] as $error) : ?>
         <div>
             <p>
                 <?php echo $error; ?>
