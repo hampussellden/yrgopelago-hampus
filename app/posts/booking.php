@@ -1,13 +1,11 @@
 <?php
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/app/autoload.php';
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/vendor/autoload.php';
-$errors = [];
 
 use GuzzleHttp\Client;
 
 $client = new Client();
-
-if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST['departure'])) {
+if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_POST['arrival']) && !empty($_POST['departure'])) {
     if (isset($_POST['features'])) {
         $chosenFeatures = $_POST['features'];
     } else {
@@ -98,6 +96,7 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
             $codeCheck = true;
         } else {
             $errors[] = 'The transfercode submited was not valid';
+            die(var_dump($_POST));
             header('location: http://localhost:4000/');
             exit;
         }
@@ -186,7 +185,9 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
         echo json_encode($bookingInfo);
     }
 } else {
-    $errors[] = 'Form was not filled in correctly';
+    $message = 'Form was not filled in correctly';
+    array_push($_SESSION['myMessage'], $message);
+    session_write_close();
     header('location: http://localhost:4000/');
     exit;
 }

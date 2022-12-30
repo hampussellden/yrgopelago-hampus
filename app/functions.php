@@ -51,9 +51,8 @@ function isValidUuid(string $uuid): bool
     return true;
 }
 
-function getRoomFeatures(int $roomId): array
+function getRoomFeatures(int $roomId, PDO $database): array
 {
-    include 'autoload.php';
     $stmt = $database->prepare('SELECT * FROM features where room_id=:room_id');
     $stmt->bindParam(':room_id', $roomId, PDO::PARAM_INT);
     $stmt->execute();
