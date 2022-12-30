@@ -1,1 +1,1 @@
-[{"id":1,"guest_id":1,"start_date":"2023-01-02","end_date":"2023-01-03","room_id":1,"transfer_code":"a6496585-4781-4ac0-b6fc-7b7ca739c6c1"},{"id":2,"guest_id":1,"start_date":"2023-01-04","end_date":"2023-01-05","room_id":1,"transfer_code":"094569ae-7386-4505-8521-2f3a90d10596"},{"id":3,"guest_id":2,"start_date":"2023-01-05","end_date":"2023-01-06","room_id":1,"transfer_code":"05e57072-1ab5-4f33-8594-1868c7ec3c45"},{"id":4,"guest_id":3,"start_date":"2023-01-06","end_date":"2023-01-07","room_id":1,"transfer_code":"5c8f2f54-0b4a-4007-b7f2-a5dab236101d"}]
+[]

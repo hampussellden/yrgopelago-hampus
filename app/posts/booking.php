@@ -1,14 +1,18 @@
 <?php
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/app/autoload.php';
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/vendor/autoload.php';
-$errors = array_diff($errors, $errors);
+$errors = [];
 
 use GuzzleHttp\Client;
 
 $client = new Client();
 
 if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST['departure'])) {
-    $chosenFeatures = $_POST['features'];
+    if (isset($_POST['features'])) {
+        $chosenFeatures = $_POST['features'];
+    } else {
+        $chosenFeatures = array();
+    }
     $roomId = $_POST['roomId'];
     $monthStart = 1672531200; //unix for Jan 2023 start
     $unixDay = 86400; //seconds in a day
@@ -61,6 +65,9 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
     $rawBookedDays = $stmt->fetchAll();
     foreach ($rawBookedDays as $day) {
         $bookedDays[] = $day['day_of_month'];
+    }
+    if ($bookedDays === null) {
+        $bookedDays = array();
     }
 
     //array_intersect looks for matches in the 2 (or more) provided arrays.
