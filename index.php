@@ -1,16 +1,17 @@
 <?php
 require 'app/autoload.php';
 require 'views/header.php';
-// Load a celendar
-require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/vendor/autoload.php';
+require 'vendor/autoload.php';
+require 'app/events.php';
 
 use benhall14\phpCalendar\Calendar as Calendar;
 
+$roomId = 1;
+$events = getEvents($roomId);
+
 $calendar = new Calendar();
 $calendar->useMondayStartingDate();
-require 'app/posts/budgetEvents.php';
 $calendar->addEvents($events);
-$roomId = 1;
 //Get the features for this room
 $features = getRoomFeatures($roomId);
 ?>
