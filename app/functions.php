@@ -77,3 +77,11 @@ function getEvents(int $roomId)
     }
     return $events;
 }
+function getRoomCost(int $roomId, PDO $database): string
+{
+    $stmt = $database->prepare('SELECT cost_per_day FROM rooms where id=:room_id');
+    $stmt->bindParam(':room_id', $roomId, PDO::PARAM_INT);
+    $stmt->execute();
+    $cost = $stmt->fetch();
+    return $cost['cost_per_day'];
+}

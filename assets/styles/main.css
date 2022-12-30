@@ -1,0 +1,100 @@
+/* Header */
+header {
+  margin: 40px 64px 0px 64px;
+  height: 120px;
+  max-width: 1314px;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  background-image: url('../images/background-image.jpeg');
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center 36%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+h1 {
+  font-family: 'Montserrat';
+  color: var(--white);
+  text-shadow: 0px 0px 8px var(--black);
+}
+/* wrapper */
+div.wrapper {
+  margin: 24px 64px 0px 64px;
+  max-width: 1314px;
+  border: var(--border);
+  border-radius: var(--border-radius);
+}
+
+/* Errors */
+div.error {
+  border: var(--border);
+  border-radius: var(--border-radius);
+  background-color: var(--red);
+  margin: 40px 64px 0px 64px;
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+}
+
+/* main */
+main {
+  display: grid;
+  grid-template-columns: 1fr 29.4%;
+  grid-template-rows: 1fr 1fr;
+  gap: 24px;
+  margin: 40px 64px 0px 64px;
+}
+aside,
+.calender-container,
+.form-container,
+form {
+  border: var(--border);
+  border-radius: var(--border-radius);
+}
+aside {
+  grid-row: 1 / 3;
+  grid-column: 2;
+}
+/* Form */
+.form-container {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 48px 0 24px;
+}
+form {
+  margin: 24px 48px 24px 24px;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+}
+form div {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+}
+form input {
+  height: 40px;
+  margin: 0 16px 0 0;
+  background-color: var(--beige);
+  border-radius: var(--border-radius);
+  border: var(--border);
+  cursor: pointer;
+}
+form label {
+  cursor: pointer;
+}
+form div:first-child input {
+  width: 260px;
+}
+form .submit-button {
+  margin: 24px 0;
+  max-width: 200px;
+}

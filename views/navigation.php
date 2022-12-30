@@ -24,13 +24,15 @@ function isActive(string $currentServer, array $item): string
 }
 ?>
 <nav class="navbar">
-    <div>
-        <ul>
-            <?php foreach ($navbarItems as $item) : ?>
-                <li class="navbar-nav <?= isActive($currentServer, $item) ?>">
-                    <a class="nav-link" href="<?= $item['href'] ?>"> <?= $item['content'] ?></a>
-                </li>
-            <?php endforeach ?>
-        </ul>
-    </div>
+    <ul>
+        <?php foreach ($navbarItems as $item) : ?>
+            <li class="navbar-nav <?= isActive($currentServer, $item) ?>">
+                <a class="nav-link" href="<?= $item['href'] ?>">
+                    <h3>
+                        <?= $item['content'] ?>
+                    </h3>
+                </a>
+            </li>
+        <?php endforeach ?>
+    </ul>
 </nav>
