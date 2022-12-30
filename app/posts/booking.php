@@ -2,25 +2,26 @@
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/app/autoload.php';
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/vendor/autoload.php';
 
+if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST['departure'])) {
+}
 //load dotenv
 $dotenv = Dotenv\Dotenv::createImmutable("/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/");
 $dotenv->load();
+
+
 
 //Count the totalcost that the form should equal to.
 $chosenFeatures = $_POST['features'];
 $roomId = $_POST['roomId'];
 if (isset($_POST['arrival'], $_POST['departure'])) {
     $monthStart = 1672531200; //unix for Jan 2023 start
-    $monthEnd = 1675209599; //uxin for Jan 2023 end
     $unixDay = 86400; //seconds in a day
     //Will give us the exact day of the arrival in the form of an INT
     $arrivalDay = ((strtotime($_POST['arrival']) - $monthStart) / $unixDay) + 1;
     $departureDay = ((strtotime($_POST['departure']) - $monthStart) / $unixDay) + 1;
-    $totalNightsStayed = $departureDay - $arrivalDay;
+    $totalDaysSpent = ($departureDay - $arrivalDay) + 1;
     $discount = 0;
-    if ($totalNightsStayed === 0) {
-        $totalNightsStayed = 1; //Day visit will cost the same as 1 night
-    } else if ($totalNightsStayed === 4) {
+    if ($totalDaysSpent === 4) {
         $discount = $discount + 3;
     }
     // a discount for chosing 2 features
@@ -39,7 +40,7 @@ if (isset($_POST['arrival'], $_POST['departure'])) {
             $costPerNight = 8;
             break;
     }
-    $featureCost = 2; //Will make
+    $featureCost = 2; //Will make an array that takes the feature cost from the database
     $totalCost = (($totalNightsStayed * $costPerNight) + $featureCost) - $discount;
 }
 
@@ -49,7 +50,7 @@ $client = new Client();
 
 //check if a transfercode is legit and not used
 $transferCode = $_POST['transferCode'];
-header('content-type: application/json');
+// header('content-type: application/json');
 try {
     $response = $client->post('https://www.yrgopelago.se/centralbank/transferCode', [
         'form_params' => [
@@ -114,8 +115,6 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
     $stmt->bindParam(':transfer_code', $validCode, PDO::PARAM_STR);
     $stmt->execute();
 
-    //Possible improvements? Make the $_POST items an array, then filter away the null values, instead of checking every one of them. That might help if we want to have different amounts of features for different rooms
-    //We can get the features as an array directly from the form with some clever HTML. Then we can loop through it and non checked features wont show up at all.
     // if the booking has features chosen, import those to the booking_to_feature table
     if (!empty($chosenFeatures)) {
         //Get the booking id of the booking we just created
@@ -135,11 +134,32 @@ if (isset($_POST['transferCode'], $_POST['guestName'], $_POST['arrival'], $_POST
     }
     $bookingMade = true;
 }
+
+//create an array to use when when filling our database with booked dates
+if ($bookingMade === true) {
+    $countDay = $arrivalDay;
+    $chosenDays = [];
+    do {
+        $chosenDays[] = $countDay;
+        $countDay++;
+    } while ($countDay <= $departureDay);
+}
+
+//fill database with the booked days using the array $chosenDays
+if ($bookingMade === true) {
+    foreach ($chosenDays as $chosenDay) {
+        $stmt = $database->prepare('INSERT INTO booked_days (booking_id, day_of_month) VALUES (:booking_id, :day_of_month);');
+        $stmt->bindParam(':booking_id', $bookingId, PDO::PARAM_INT);
+        $stmt->bindParam(':day_of_month', $chosenDay, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+}
+
+//Json response on succesful booking
 if ($bookingMade === true) {
     $islandName = $_ENV['ISLAND_NAME'];
     $hotelName = $_ENV['HOTEL_NAME'];
     $stars = $_ENV['STARS'];
-    header('content-type: application/json');
     $bookingInfo = [
         'island' => $islandName,
         'hotel' => $hotelName,
@@ -150,5 +170,6 @@ if ($bookingMade === true) {
         'features' => 'featuresarray', //Make an array with features and there costs here
         'additional_info' => '' //maybe include discounts here if there are any
     ];
+    header('content-type: application/json');
     echo json_encode($bookingInfo);
 }
