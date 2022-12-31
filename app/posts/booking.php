@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/app/autoload.php';
 require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/vendor/autoload.php';
 
@@ -6,7 +8,7 @@ use GuzzleHttp\Client;
 
 $client = new Client();
 $_SESSION['errors'] = [];
-$roomId = $_POST['roomId'];
+$roomId = (int)$_POST['roomId'];
 switch ($roomId) {
     case 1:
         $redirectLocation = '../../index.php';
@@ -18,14 +20,9 @@ switch ($roomId) {
         $redirectLocation = '../../luxury.php';
         break;
 }
+
 if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_POST['arrival']) && !empty($_POST['departure'])) {
-    if (!empty($_POST['features'])) {
-        $chosenFeatures = $_POST['features'];
-    } else {
-        $chosenFeatures = array();
-    }
     //variables to be used
-    $roomId = $_POST['roomId'];
     $transferCode = $_POST['transferCode'];
     $guestName = ucfirst(strtolower(htmlspecialchars(trim($_POST['guestName']), ENT_QUOTES)));
     $arrival = $_POST['arrival'];
@@ -39,7 +36,14 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
     $departureDay = ((strtotime($_POST['departure']) - $monthStart) / $unixDay) + 1;
     $totalDaysSpent = ($departureDay - $arrivalDay) + 1;
 
-
+    //Get info about the cosen features
+    if (!empty($_POST['features'])) {
+        $chosenFeatures = $_POST['features'];
+        $chosenFeatures = array_map('intval', $chosenFeatures);
+        $featureCost = getFeatureCost($chosenFeatures, $database);
+    } else {
+        $chosenFeatures = array();
+    }
     //Count the totalcost that the form should equal to.
     if ($totalDaysSpent >= 4) {
         $discount = $discount + 3;
@@ -60,11 +64,8 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
             $costPerDay = 8;
             break;
     }
-    //Will make an array that takes the feature cost from the database
-    $featureCost = 2;
+    // calculate totalCost
     $totalCost = (($totalDaysSpent * $costPerDay) + $featureCost) - $discount;
-
-
     //create an array to use when when filling our database with booked dates and to compare against already booked dates
     $countDay = $arrivalDay;
     $chosenDays = [];
@@ -74,7 +75,8 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
     } while ($countDay <= $departureDay);
 
     //Check dates so that the dates are available
-    $stmt = $database->query('SELECT day_of_month FROM booked_days');
+    $stmt = $database->prepare('SELECT day_of_month FROM booked_days where room_id=:room_id');
+    $stmt->bindParam(':room_id', $roomId, PDO::PARAM_INT);
     $rawBookedDays = $stmt->fetchAll();
     foreach ($rawBookedDays as $day) {
         $bookedDays[] = $day['day_of_month'];
@@ -157,8 +159,8 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
             $stmt = $database->prepare('SELECT id FROM bookings where transfer_code=:transfer_code');
             $stmt->bindParam(':transfer_code', $validCode, PDO::PARAM_STR);
             $stmt->execute();
-            $bookingIdResponse = $stmt->fetch();
-            $bookingId = $bookingIdResponse['id'];
+            $response = $stmt->fetch();
+            $bookingId = $response['id'];
             //loop through the chosen features and add them to the pivot table booking_to_feature
             foreach ($chosenFeatures as $feature) {
                 $stmt = $database->prepare('INSERT INTO booking_to_feature (booking_id, feature_id) VALUES (:booking_id, :feature_id);');
@@ -173,8 +175,9 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
     //fill database with the booked days using the array $chosenDays
     if ($bookingMade === true) {
         foreach ($chosenDays as $chosenDay) {
-            $stmt = $database->prepare('INSERT INTO booked_days (booking_id, day_of_month) VALUES (:booking_id, :day_of_month);');
+            $stmt = $database->prepare('INSERT INTO booked_days (booking_id, room_id, day_of_month) VALUES (:booking_id, :room_id, :day_of_month);');
             $stmt->bindParam(':booking_id', $bookingId, PDO::PARAM_INT);
+            $stmt->bindParam(':room_id', $roomId, PDO::PARAM_INT);
             $stmt->bindParam(':day_of_month', $chosenDay, PDO::PARAM_INT);
             $stmt->execute();
         }

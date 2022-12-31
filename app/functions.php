@@ -85,3 +85,23 @@ function getRoomCost(int $roomId, PDO $database): string
     $cost = $stmt->fetch();
     return $cost['cost_per_day'];
 }
+function getChosenFeatures(int $featureId, PDO $database): array
+{
+    $stmt = $database->prepare('SELECT * FROM features where id=:id');
+    $stmt->bindParam(':id', $featureId, PDO::PARAM_INT);
+    $stmt->execute();
+    $features = $stmt->fetchAll();
+    return $features[0];
+}
+
+function getFeatureCost(array $chosenFeatures, PDO $database): int
+{
+    foreach ($chosenFeatures as $feature) {
+        $features[] = getChosenFeatures($feature, $database);
+    }
+    $featureCost = 0;
+    foreach ($features as $key => $feature) {
+        $featureCost = $featureCost + $feature['cost'];
+    }
+    return $featureCost;
+}

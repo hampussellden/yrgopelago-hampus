@@ -59,7 +59,7 @@ $features = getRoomFeatures($roomId, $database);
             </div>
             <?php foreach ($features as $feature) : ?>
                 <div>
-                    <input class="css-checkbox" type="checkbox" value="<?= $feature['id'] ?>" id="<?= $feature['name'] ?>" name="features[0]">
+                    <input class="css-checkbox" type="checkbox" value="<?= $feature['id'] ?>" id="<?= $feature['name'] ?>" name="features[]">
                     <label for="<?= $feature['name'] ?>"><?= $feature['name'] . ' $' . $feature['cost'] ?></label>
                 </div>
             <?php endforeach ?>

@@ -1,7 +1,7 @@
 const imgSection = document.querySelector('section.images');
 const pageHref = window.location.href;
-// const websiteHostName = 'http://bosse.ai/yrgopelago-hampus/';
-const websiteHostName = 'http://localhost:4000/';
+const websiteHostName = 'http://bosse.ai/yrgopelago-hampus/';
+// const websiteHostName = 'http://localhost:4000/';
 
 const images = {
   budget: [
