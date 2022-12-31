@@ -33,7 +33,7 @@ $features = getRoomFeatures($roomId, $database);
         </div>
     </div>
     <aside>
-        <?= $currentServer ?>
+
     </aside>
     <div class="form-container">
         <div class="form-header">
@@ -70,3 +70,5 @@ $features = getRoomFeatures($roomId, $database);
         </form>
     </div>
 </main>
+<?php
+require 'views/footer.php';

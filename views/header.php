@@ -18,9 +18,10 @@
 </head>
 
 <body>
-    <header>
-        <h1>Neversummer Hotel</h1>
-    </header>
-    <div class="wrapper">
-        <?php
-        require 'navigation.php';
+    <div class="contents-container">
+        <header>
+            <h1>Neversummer Hotel</h1>
+        </header>
+        <div class="main-wrapper">
+            <?php
+            require 'navigation.php';

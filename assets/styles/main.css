@@ -2,7 +2,6 @@
 header {
   margin: 40px 64px 0px 64px;
   height: 120px;
-  max-width: 1314px;
   border: var(--border);
   border-radius: var(--border-radius);
   background-image: url('../images/background-image.jpeg');
@@ -19,7 +18,7 @@ h1 {
   text-shadow: 0px 0px 8px var(--black);
 }
 /* wrapper */
-div.wrapper {
+div.main-wrapper {
   margin: 24px 64px 0px 64px;
   max-width: 1314px;
   border: var(--border);
@@ -42,10 +41,25 @@ div.error {
 /* main */
 main {
   display: grid;
-  grid-template-columns: 1fr 29.4%;
-  grid-template-rows: 1fr 1fr;
   gap: 24px;
   margin: 40px 64px 0px 64px;
+  grid-template-columns: 1fr 29.4%;
+  grid-template-rows: minmax(auto, 41%) min(54%);
+}
+@media screen and (min-width: 1250px) {
+  main {
+    grid-template-rows: minmax(auto, 40%) min(54%);
+  }
+}
+@media screen and (min-width: 1280px) {
+  main {
+    grid-template-rows: minmax(auto, 39%) min(54%);
+  }
+}
+@media screen and (min-width: 1320px) {
+  main {
+    grid-template-rows: minmax(auto, 38%) min(54%);
+  }
 }
 aside,
 .calender-container,
@@ -54,9 +68,30 @@ form {
   border: var(--border);
   border-radius: var(--border-radius);
 }
+.calender-container {
+  overflow: hidden;
+}
+/* Aside */
 aside {
+  padding-top: 12px;
+  overflow-y: scroll;
   grid-row: 1 / 3;
   grid-column: 2;
+}
+
+aside div {
+  border: var(--border);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  margin: 12px 24px;
+  max-height: 188px;
+  display: flex;
+  align-items: center;
+}
+aside img {
+  object-fit: cover;
+  width: 100%;
+  aspect-ratio: 16/9;
 }
 /* Form */
 .form-container {
@@ -76,7 +111,7 @@ form {
   flex-direction: column;
 }
 form div {
-  margin-top: 24px;
+  margin-top: 12px;
   display: flex;
   align-items: center;
 }
