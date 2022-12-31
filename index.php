@@ -15,13 +15,16 @@ $calendar->addEvents($events);
 //Get the features for this room
 $features = getRoomFeatures($roomId, $database);
 ?>
-<?php foreach ($_SESSION['errors'] as $error) : ?>
-    <div class="error">
-        <p>
-            <?php echo $error; ?>
-        </p>
-    </div>
-<?php endforeach; ?>
+<?php if (!empty($_SESSION)) : ?>
+    <?php foreach ($_SESSION['errors'] as $error) : ?>
+        <div class="error">
+            <p>
+                <?php echo $error; ?>
+            </p>
+        </div>
+    <?php endforeach; ?>
+    <?php session_unset(); ?>
+<?php endif ?>
 <main>
     <div class="calender-container">
         <div class="col-xs-12 col-sm-6 col-md-4">
@@ -30,7 +33,7 @@ $features = getRoomFeatures($roomId, $database);
         </div>
     </div>
     <aside>
-
+        <?= $currentServer ?>
     </aside>
     <div class="form-container">
         <div class="form-header">

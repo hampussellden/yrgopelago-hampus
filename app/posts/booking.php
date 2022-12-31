@@ -6,6 +6,18 @@ use GuzzleHttp\Client;
 
 $client = new Client();
 $_SESSION['errors'] = [];
+$roomId = $_POST['roomId'];
+switch ($roomId) {
+    case 1:
+        $redirectLocation = '../../index.php';
+        break;
+    case 2:
+        $redirectLocation = '../../standard.php';
+        break;
+    case 3:
+        $redirectLocation = '../../luxury.php';
+        break;
+}
 if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_POST['arrival']) && !empty($_POST['departure'])) {
     if (!empty($_POST['features'])) {
         $chosenFeatures = $_POST['features'];
@@ -76,7 +88,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
     if (!empty($matchingDates)) {
         $message = 'A date you have chosen is already booked by someone else';
         array_push($_SESSION['errors'], $message);
-        header('location: http://localhost:4000/');
+        header('location: ' . $redirectLocation);
         exit;
     }
     //check if a transfercode is legit and not used
@@ -101,7 +113,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
         } else {
             $message = 'The transfercode submited was not valid';
             array_push($_SESSION['errors'], $message);
-            header('location: http://localhost:4000/');
+            header('location: ' . $redirectLocation);
             exit;
         }
     } catch (Exception $e) {
@@ -191,7 +203,6 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
 } else {
     $message = 'Form was not filled in correctly';
     array_push($_SESSION['errors'], $message);
-    session_write_close();
-    header('location: http://localhost:4000/');
+    header('location: ' . $redirectLocation);
     exit;
 }
