@@ -1,6 +1,6 @@
 /* Header */
 header {
-  margin: 40px 64px 0px 64px;
+  margin: 24px 64px 0px 64px;
   height: 120px;
   border: var(--border);
   border-radius: var(--border-radius);
@@ -13,7 +13,6 @@ header {
   justify-content: center;
 }
 h1 {
-  font-family: 'Montserrat';
   color: var(--white);
   text-shadow: 0px 0px 8px var(--black);
 }
@@ -30,7 +29,7 @@ div.error {
   border: var(--border);
   border-radius: var(--border-radius);
   background-color: var(--red);
-  margin: 40px 64px 0px 64px;
+  margin: 24px 64px 0px 64px;
   color: var(--white);
   display: flex;
   justify-content: center;
@@ -41,27 +40,11 @@ div.error {
 /* main */
 main {
   display: grid;
-  gap: 24px;
-  margin: 40px 64px 0px 64px;
-  grid-template-columns: 1fr 29.4%;
-  grid-template-rows: minmax(auto, 41%) min(54%);
+  margin: 24px 64px 0px 64px;
+  grid-template-columns: auto minmax(200px, 29.4%);
+  grid-template-rows: minmax(auto, 433px) minmax(auto, 543px);
 }
-@media screen and (min-width: 1250px) {
-  main {
-    grid-template-rows: minmax(auto, 40%) min(54%);
-  }
-}
-@media screen and (min-width: 1280px) {
-  main {
-    grid-template-rows: minmax(auto, 39%) min(54%);
-  }
-}
-@media screen and (min-width: 1320px) {
-  main {
-    grid-template-rows: minmax(auto, 38%) min(54%);
-  }
-}
-aside,
+section.images,
 .calender-container,
 .form-container,
 form {
@@ -72,14 +55,17 @@ form {
   overflow: hidden;
 }
 /* Aside */
-aside {
-  padding-top: 12px;
+section.images {
   overflow-y: scroll;
   grid-row: 1 / 3;
   grid-column: 2;
+  margin-left: 24px;
+}
+section.images div:first-child {
+  margin-top: 24px;
 }
 
-aside div {
+section.images div {
   border: var(--border);
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -88,14 +74,14 @@ aside div {
   display: flex;
   align-items: center;
 }
-aside img {
+section.images img {
   object-fit: cover;
   width: 100%;
   aspect-ratio: 16/9;
 }
 /* Form */
 .form-container {
-  margin-top: 16px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
 }
@@ -116,7 +102,7 @@ form div {
   align-items: center;
 }
 form input {
-  height: 40px;
+  height: 32px;
   margin: 0 16px 0 0;
   background-color: var(--beige);
   border-radius: var(--border-radius);
@@ -132,4 +118,37 @@ form div:first-child input {
 form .submit-button {
   margin: 24px 0;
   max-width: 200px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+form label {
+  font-weight: 600;
+}
+
+/* Offers */
+div.offers {
+  border: var(--border);
+  border-radius: var(--border-radius);
+  margin: 24px 64px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--beige);
+}
+/* Footer */
+footer {
+  border: var(--border);
+  border-radius: var(--border-radius);
+  margin: 24px 64px;
+  display: flex;
+  padding: 24px 64px;
+  justify-content: space-between;
+  font-weight: 600;
+  background-image: url('../images/background-image.jpeg');
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center bottom;
+  color: var(--white);
+  text-shadow: 0px 0px 8px var(--black);
 }

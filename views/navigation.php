@@ -9,7 +9,7 @@ $navbarItems = [
         'content' => 'Standard',
     ],
     'luxury' => [
-        'href' => '/standard.php',
+        'href' => '/luxury.php',
         'content' => 'Luxury',
     ]
 ];
@@ -28,9 +28,9 @@ function isActive(string $currentServer, array $item): string
         <?php foreach ($navbarItems as $item) : ?>
             <li class="navbar-nav <?= isActive($currentServer, $item) ?>">
                 <a class="nav-link" href="<?= $item['href'] ?>">
-                    <h3>
+                    <h2>
                         <?= $item['content'] ?>
-                    </h3>
+                    </h2>
                 </a>
             </li>
         <?php endforeach ?>

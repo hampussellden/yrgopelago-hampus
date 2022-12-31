@@ -6,7 +6,7 @@ require 'app/events.php';
 
 use benhall14\phpCalendar\Calendar as Calendar;
 
-$roomId = 1;
+$roomId = 3;
 
 $events = getEvents($roomId);
 $calendar = new Calendar();

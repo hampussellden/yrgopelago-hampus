@@ -41,7 +41,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
 
 
     //Count the totalcost that the form should equal to.
-    if ($totalDaysSpent === 4) {
+    if ($totalDaysSpent >= 4) {
         $discount = $discount + 3;
     }
     // a discount for chosing 2 features
