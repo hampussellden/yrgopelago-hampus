@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="vendor/benhall14/php-calendar/html/css/calendar.css">
     <link rel="stylesheet" href="vendor/benhall14/php-calendar/html/css/calendar.min.css">
     <link rel="stylesheet" href="vendor/benhall14/php-calendar/html/css/stylesheet.css">
-    <link rel="stylesheet" type="text/css" href="/vendor/benhall14/php-calendar/html/css/calendar.min.css">
+    <link rel="stylesheet" href="vendor/benhall14/php-calendar/html/css/calendar.min.css">
 </head>
 
 <body>

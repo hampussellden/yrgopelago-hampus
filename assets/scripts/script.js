@@ -1,7 +1,7 @@
 const imgSection = document.querySelector('section.images');
 const pageHref = window.location.href;
-// const websiteHostName = 'http://bosse.ai/neversummer/';
-const websiteHostName = 'http://localhost:4000/';
+const websiteHostName = 'https://bosse.ai/neversummer/';
+// const websiteHostName = 'http://localhost:4000/';
 
 let roomId = 1;
 if (pageHref == websiteHostName + 'standard.php') {
