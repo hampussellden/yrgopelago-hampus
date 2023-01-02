@@ -24,3 +24,8 @@ navItems.forEach((item) => {
     item.classList.remove('active');
   }
 });
+//if on index but index.php isnt showing in the url
+const navIndex = document.querySelector('.navbar ul:first-child li');
+if (pageHref == websiteHostName) {
+  navIndex.classList.add('active');
+}

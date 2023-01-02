@@ -197,8 +197,12 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
             'departure_date' => $departure,
             'total_cost' => $totalCost,
             'stars' => $stars,
-            'features' => 'featuresarray', //Make an array with features and there costs here
-            'additional_info' => '' //maybe include discounts here if there are any
+            'features' => [
+                $chosenFeatures,
+                $featureCost
+            ],
+            //Make an array with features and there costs here
+            'additional_info' => 'You saved $' . $discount . ' with discoutns' //maybe include discounts here if there are any
         ];
         header('content-type: application/json');
         echo json_encode($bookingInfo);
