@@ -1,15 +1,15 @@
 <?php
 $navbarItems = [
     'budget' => [
-        'href' => '/index.php',
+        'href' => 'index.php',
         'content' => 'Budget',
     ],
     'standard' => [
-        'href' => '/standard.php',
+        'href' => 'standard.php',
         'content' => 'Standard',
     ],
     'luxury' => [
-        'href' => '/luxury.php',
+        'href' => 'luxury.php',
         'content' => 'Luxury',
     ]
 ];
@@ -25,6 +25,7 @@ function isActive(string $currentServer, array $item): string
 ?>
 <nav class="navbar">
     <ul>
+        <?= $currentServer ?>
         <?php foreach ($navbarItems as $item) : ?>
             <li class="navbar-nav <?= isActive($currentServer, $item) ?>">
                 <a class="nav-link" href="<?= $item['href'] ?>">

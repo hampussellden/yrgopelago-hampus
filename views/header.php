@@ -23,5 +23,3 @@
             <h1>Neversummer Hotel</h1>
         </header>
         <div class="main-wrapper">
-            <?php
-            require 'navigation.php';
