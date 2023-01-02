@@ -17,7 +17,7 @@ $navbarItems = [
 <nav class="navbar">
     <ul>
         <?php foreach ($navbarItems as $item) : ?>
-            <li class="navbar-nav">
+            <li class="navbar-item">
                 <a class="nav-link" href="<?= $item['href'] ?>">
                     <h2>
                         <?= $item['content'] ?>
