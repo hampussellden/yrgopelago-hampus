@@ -43,6 +43,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
         $featureCost = getFeatureCost($chosenFeatures, $database);
     } else {
         $chosenFeatures = array();
+        $featureCost = 0;
     }
     //Count the totalcost that the form should equal to.
     if ($totalDaysSpent >= 4) {
@@ -53,17 +54,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
         $discount = $discount + 2;
     }
     //calculate the cost for the room
-    switch ($roomId) {
-        case 1:
-            $costPerDay = 2;
-            break;
-        case 2:
-            $costPerDay = 4;
-            break;
-        case 3:
-            $costPerDay = 8;
-            break;
-    }
+    $costPerDay = getRoomCost($roomId, $database);
     // calculate totalCost
     $totalCost = (($totalDaysSpent * $costPerDay) + $featureCost) - $discount;
     //create an array to use when when filling our database with booked dates and to compare against already booked dates
@@ -153,14 +144,14 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
         $stmt->bindParam(':transfer_code', $validCode, PDO::PARAM_STR);
         $stmt->execute();
 
+        //Get the booking id of the booking we just created
+        $stmt = $database->prepare('SELECT id FROM bookings where transfer_code=:transfer_code');
+        $stmt->bindParam(':transfer_code', $validCode, PDO::PARAM_STR);
+        $stmt->execute();
+        $response = $stmt->fetch();
+        $bookingId = $response['id'];
         // if the booking has features chosen, import those to the booking_to_feature table
         if (!empty($chosenFeatures)) {
-            //Get the booking id of the booking we just created
-            $stmt = $database->prepare('SELECT id FROM bookings where transfer_code=:transfer_code');
-            $stmt->bindParam(':transfer_code', $validCode, PDO::PARAM_STR);
-            $stmt->execute();
-            $response = $stmt->fetch();
-            $bookingId = $response['id'];
             //loop through the chosen features and add them to the pivot table booking_to_feature
             foreach ($chosenFeatures as $feature) {
                 $stmt = $database->prepare('INSERT INTO booking_to_feature (booking_id, feature_id) VALUES (:booking_id, :feature_id);');
@@ -204,8 +195,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
                     $featureCost
                 ],
             ],
-            //Make an array with features and there costs here
-            'additional_info' => 'You saved $' . $discount . ' with discoutns' //maybe include discounts here if there are any
+            'additional_info' => 'You saved $' . $discount . ' with discounts'
         ];
         header('content-type: application/json');
         echo json_encode($bookingInfo);
