@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 $client = new Client();
 
 try {
-    $response = $client->get('http://localhost:3000/02.php');
+    $response = $client->post('http://localhost:4000/app/posts/booking.php');
 } catch (ClientException $e) {
     echo $e->getMessage();
 }

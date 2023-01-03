@@ -1,8 +1,8 @@
 <?php
 
 declare(strict_types=1);
-require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/app/autoload.php';
-require '/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/vendor/autoload.php';
+require '../../app/autoload.php';
+require '../../vendor/autoload.php';
 
 use GuzzleHttp\Client;
 
@@ -21,10 +21,10 @@ switch ($roomId) {
         break;
 }
 
-if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_POST['arrival']) && !empty($_POST['departure'])) {
+if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['arrival']) && !empty($_POST['departure'])) {
     //variables to be used
     $transferCode = $_POST['transferCode'];
-    $guestName = ucfirst(strtolower(htmlspecialchars(trim($_POST['guestName']), ENT_QUOTES)));
+    $guestName = ucfirst(strtolower(htmlspecialchars(trim($_POST['name']), ENT_QUOTES)));
     $arrival = $_POST['arrival'];
     $departure = $_POST['departure'];
 
@@ -185,7 +185,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
     //Json response on succesful booking
     if ($bookingMade === true) {
         //load dotenv
-        $dotenv = Dotenv\Dotenv::createImmutable("/Users/hampussellden/Documents/dev/Projekt/yrgopelago-hampus/");
+        $dotenv = Dotenv\Dotenv::createImmutable("/Users/hampussellden/Documents/dev/Projekt/neversummer/");
         $dotenv->load();
         $islandName = $_ENV['ISLAND_NAME'];
         $hotelName = $_ENV['HOTEL_NAME'];
@@ -198,8 +198,11 @@ if (!empty($_POST['transferCode']) && !empty($_POST['guestName']) && !empty($_PO
             'total_cost' => $totalCost,
             'stars' => $stars,
             'features' => [
+                'chosenFeatures' =>
                 $chosenFeatures,
-                $featureCost
+                'totalFeatureCosts' => [
+                    $featureCost
+                ],
             ],
             //Make an array with features and there costs here
             'additional_info' => 'You saved $' . $discount . ' with discoutns' //maybe include discounts here if there are any

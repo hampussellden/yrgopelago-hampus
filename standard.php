@@ -47,7 +47,7 @@ $features = getRoomFeatures($roomId, $database);
                 <label for="transferCode">Transfer Code</label>
             </div>
             <div>
-                <input type="text" id="guestName" name="guestName">
+                <input type="text" id="guestName" name="name">
                 <label for="guestName">Your Name</label>
             </div>
             <div>
