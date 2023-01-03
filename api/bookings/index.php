@@ -21,6 +21,7 @@ if (!empty($_POST)) {
     }
 
     //Features
+    $_POST['features'] = array_map('intval', $_POST['features']);
     if ($_POST['roomId'] === 2) {
         foreach ($_POST['features'] as $feature) {
             $feature = $feature + 3;
@@ -30,7 +31,6 @@ if (!empty($_POST)) {
             $feature = $feature + 6;
         }
     }
-
     require '../../app/posts/booking.php';
 } else {
     $bookingInfo = file_get_contents('../../app/posts/bookings.json');
