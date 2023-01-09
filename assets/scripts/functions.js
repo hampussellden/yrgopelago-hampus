@@ -22,3 +22,5 @@ const getImages = (id) => {
       break;
   }
 };
+
+const calculateForm = ($roomId) => {};

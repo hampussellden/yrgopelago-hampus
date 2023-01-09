@@ -4,4 +4,3 @@
 $stmt = $database->query('SELECT * from bookings');
 $data = $stmt->fetchAll();
 file_put_contents('app/posts/bookings.json', json_encode($data));
-// header('location:http://bosse.ai/yrgopelago-hampus');

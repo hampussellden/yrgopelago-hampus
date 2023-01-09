@@ -29,3 +29,8 @@ const navIndex = document.querySelector('.navbar ul:first-child li');
 if (pageHref == websiteHostName) {
   navIndex.classList.add('active');
 }
+
+// Live cost calculator
+const form = document.querySelector('form');
+
+form.addEventListener('onchange', calculateForm());

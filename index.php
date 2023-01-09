@@ -1,9 +1,8 @@
 <?php
 require 'app/autoload.php';
-include 'vendor/autoload.php';
-include 'views/header.php';
+require 'vendor/autoload.php';
+require 'views/header.php';
 require 'views/navigation.php';
-include 'app/events.php';
 
 use benhall14\phpCalendar\Calendar as Calendar;
 
