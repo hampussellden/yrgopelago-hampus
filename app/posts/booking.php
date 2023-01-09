@@ -35,7 +35,12 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     $arrivalDay = ((strtotime($_POST['arrival']) - $monthStart) / $unixDay) + 1;
     $departureDay = ((strtotime($_POST['departure']) - $monthStart) / $unixDay) + 1;
     $totalDaysSpent = ($departureDay - $arrivalDay) + 1;
-
+    if ($totalDaysSpent < 1) {
+        $message = 'Invalid date input';
+        array_push($_SESSION['errors'], $message);
+        header('location: ' . $redirectLocation);
+        exit;
+    }
     //Get info about the cosen features
     if (!empty($_POST['features'])) {
         $chosenFeatures = $_POST['features'];
