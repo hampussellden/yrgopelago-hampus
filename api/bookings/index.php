@@ -4,7 +4,7 @@ declare(strict_types=1);
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 include_once '../../app/autoload.php';
-$_POST = $_GET;
+
 if (!empty($_POST)) {
     //Rooms
     $_POST['room'] = strtolower(htmlspecialchars(trim($_POST['room']), ENT_QUOTES));
