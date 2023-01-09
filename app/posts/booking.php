@@ -181,6 +181,9 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
         $islandName = $_ENV['ISLAND_NAME'];
         $hotelName = $_ENV['HOTEL_NAME'];
         $stars = $_ENV['STARS'];
+        foreach ($chosenFeatures as $feature) {
+            $postFeatures[] = getChosenFeatures($feature, $database);
+        }
         $bookingInfo = [
             'island' => $islandName,
             'hotel' => $hotelName,
@@ -189,11 +192,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
             'total_cost' => $totalCost,
             'stars' => $stars,
             'features' => [
-                'chosenFeatures' =>
-                $chosenFeatures,
-                'totalFeatureCosts' => [
-                    $featureCost
-                ],
+                $postFeatures
             ],
             'additional_info' => 'You saved $' . $discount . ' with discounts'
         ];

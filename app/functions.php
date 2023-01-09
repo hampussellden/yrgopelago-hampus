@@ -87,7 +87,7 @@ function getRoomCost(int $roomId, PDO $database): string
 }
 function getChosenFeatures(int $featureId, PDO $database): array
 {
-    $stmt = $database->prepare('SELECT * FROM features where id=:id');
+    $stmt = $database->prepare('SELECT name, cost FROM features where id=:id');
     $stmt->bindParam(':id', $featureId, PDO::PARAM_INT);
     $stmt->execute();
     $features = $stmt->fetchAll();
