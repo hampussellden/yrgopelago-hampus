@@ -38,6 +38,7 @@ $features = getRoomFeatures($roomId, $database);
     <section class="form-container">
         <div class="form-header">
             <h3>Book this room</h3>
+            <h3 class="current-price"></h3>
             <h3>$<?= getRoomCost($roomId, $database) ?> per day</h3>
         </div>
         <form action="app/posts/booking.php" method="post">
