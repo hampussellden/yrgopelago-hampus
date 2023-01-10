@@ -1,9 +1,10 @@
 <?php
-require 'views/header.php';
 require 'app/autoload.php';
+require 'views/header.php';
 require 'vendor/autoload.php';
 require 'app/features.php';
 require 'app/rooms.php';
+
 ?>
 <?php if (isset($_SESSION['user'])) : ?>
     <h2 class="admin">Welcome <?= $_SESSION['user']['name'] ?></h2>

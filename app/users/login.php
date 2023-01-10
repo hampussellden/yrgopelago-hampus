@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 require '../autoload.php';
 require '../../vendor/autoload.php';
+$_SESSION['hej'] = 'goddag';
 
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable('../../../neversummer/');
 $dotenv->load();
 
-$redirectLocation = '../../admin.php';
-
+$redirectLocation = 'https://bosse.ai/neversummer/admin.php';
+$_SESSION['errors'] = [];
 // In this file we login users.
 if (isset($_POST['username'], $_POST['password'])) {
     $username = htmlspecialchars($_POST['username'], ENT_QUOTES);
@@ -24,7 +25,6 @@ if (isset($_POST['username'], $_POST['password'])) {
         exit;
     } else {
         if ($_ENV['API_KEY'] !== $password) {
-            die(var_dump('Hello nr2'));
             $message = 'Form was not filled in correctly';
             array_push($_SESSION['errors'], $message);
             header('location: ' . $redirectLocation);
@@ -33,7 +33,8 @@ if (isset($_POST['username'], $_POST['password'])) {
             $_SESSION['user'] = [
                 'name' => $username
             ];
-            redirect('../../admin.php');
+            header('location: ' . $redirectLocation);
+            exit;
         }
     }
 }
