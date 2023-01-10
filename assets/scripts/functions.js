@@ -79,11 +79,7 @@ const currentPrice = document.querySelector('h3.current-price');
 
 const updateLiveCost = (featureCost, daysCosts) => {
   const totalCost = featureCost + daysCosts;
-  if (totalCost < 0 || NaN) {
-    currentPrice.style.display.none;
-  } else {
-    currentPrice.innerHTML = `current booking: $${totalCost}`;
-  }
+  currentPrice.innerHTML = `current booking: $${totalCost}`;
 };
 
 const calculateForm = (features, roomCost, departure, arrival) => {

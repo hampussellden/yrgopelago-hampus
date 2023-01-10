@@ -9,7 +9,6 @@ if (pageHref == websiteHostName + 'standard.php') {
 } else if (pageHref == websiteHostName + 'luxury.php') {
   roomId = 3;
 }
-
 getImages(roomId);
 getImages(roomId);
 

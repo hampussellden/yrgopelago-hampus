@@ -42,8 +42,9 @@ const features = [
   { id: 6, room_id: 2, name: '5 course dinner', cost: 6 },
   { id: 7, room_id: 3, name: 'Ski Rental', cost: 2 },
   { id: 8, room_id: 3, name: '5 course dinner', cost: 6 },
-  { id: 9, room_id: 3, name: 'VIP table at the after ski', cost: 8 },
+  { id: 9, room_id: 3, name: 'VIP Table at the after ski', cost: 8 },
 ];
+
 const rooms = [
   { id: 1, room__name: 'budget', cost_per_day: 2 },
   { id: 2, room__name: 'standard', cost_per_day: 4 },
