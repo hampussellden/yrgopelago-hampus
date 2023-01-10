@@ -58,8 +58,8 @@ require 'app/rooms.php';
                 <label for="discountAmountOfDays">How many days</label>
             </div>
             <div>
-                <input type="number" name="discountDaysCost" placeholder="discount Amount" id="discountDaysReduction">
-                <label for="discountDaysReduction">Discount amount</label>
+                <input type="number" name="discountDaysValue" placeholder="discount Amount" id="discountDaysValue">
+                <label for="discountDaysValue">Discount amount</label>
             </div>
             <input class="submit-button" type="submit"></input>
         </form>
