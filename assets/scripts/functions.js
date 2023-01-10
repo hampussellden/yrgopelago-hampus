@@ -23,28 +23,6 @@ const getImages = (id) => {
   }
 };
 
-// const getFeaturesInfo = async (roomId) => {
-//   try {
-//     const url = '././app/posts/features.json';
-//     const response = await fetch(url);
-//     const data = await response.json();
-//     const result = data.filter((d) => d.room_id == roomId);
-//     return result;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-// const getRoomInfo = async (roomId) => {
-//   try {
-//     const url = '././app/posts/rooms.json';
-//     const response = await fetch(url);
-//     const data = await response.json();
-//     const result = data.filter((d) => d.id == roomId);
-//     return result[0]['cost_per_day'];
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 const getRoomCost = (roomId) => {
   const result = rooms.filter((room) => room.id == roomId);
   return result[0]['cost_per_day'];
