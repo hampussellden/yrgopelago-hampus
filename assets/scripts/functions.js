@@ -67,11 +67,8 @@ const getDayCosts = (roomCost, departure, arrival) => {
   const arrivalDate = arrival.value.split('-');
   const departureDay = departureDate[2];
   const arrivalDay = arrivalDate[2];
-  var minDay = 0;
+  const minDay = 1;
   const totalDays = Number(departureDay) - Number(arrivalDay);
-  if (totalDays == 0) {
-    minDay = 1;
-  }
   const cost = roomCost * (totalDays + minDay);
   return cost;
 };
