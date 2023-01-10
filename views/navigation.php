@@ -1,7 +1,6 @@
 <?php
 require 'app/events.php';
-require 'app/features.php';
-require 'app/rooms.php';
+
 
 $navbarItems = [
     'budget' => [
