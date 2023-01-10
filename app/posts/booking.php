@@ -180,15 +180,14 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     }
     //Json response on succesful booking
     if ($bookingMade === true) {
-        //load dotenv
-        $dotenv = Dotenv\Dotenv::createImmutable("/Users/hampussellden/Documents/dev/Projekt/neversummer/");
-        $dotenv->load();
-        $islandName = $_ENV['ISLAND_NAME'];
-        $hotelName = $_ENV['HOTEL_NAME'];
-        $stars = $_ENV['STARS'];
+        $islandName = 'Glacier Island';
+        $hotelName = 'Neversummer hotel';
+        $stars = 4;
+        $postFeatures = [];
         foreach ($chosenFeatures as $feature) {
             $postFeatures[] = getChosenFeatures($feature, $database);
         }
+
         $bookingInfo = [
             'island' => $islandName,
             'hotel' => $hotelName,
