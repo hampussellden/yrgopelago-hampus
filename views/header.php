@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="assets/styles/navigation.css">
     <link rel="stylesheet" href="assets/styles/checkbox.css">
     <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/admin.css">
     <link rel="stylesheet" href="vendor/benhall14/php-calendar/html/css/calendar.css">
     <link rel="stylesheet" href="vendor/benhall14/php-calendar/html/css/calendar.min.css">
     <link rel="stylesheet" href="vendor/benhall14/php-calendar/html/css/stylesheet.css">

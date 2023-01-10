@@ -50,7 +50,11 @@ function isValidUuid(string $uuid): bool
     }
     return true;
 }
-
+function redirect(string $path)
+{
+    header("Location: " . $path);
+    exit;
+}
 function getRoomFeatures(int $roomId, PDO $database): array
 {
     $stmt = $database->prepare('SELECT * FROM features where room_id=:room_id');

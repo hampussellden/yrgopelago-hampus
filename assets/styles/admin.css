@@ -1,0 +1,16 @@
+form.admin div:first-child input {
+  width: 147px;
+}
+form.admin {
+  padding: 24px;
+}
+main.admin {
+  display: grid;
+  margin: 24px 64px 0px 64px;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: auto auto;
+}
+h2.admin {
+  text-align: center;
+  padding-top: 8px;
+}
