@@ -14,6 +14,10 @@ $calendar->useMondayStartingDate();
 $calendar->addEvents($events);
 //Get the features for this room
 $features = getRoomFeatures($roomId, $database);
+//get discounts
+$discounts = getDiscounts($database);
+$staytimeDiscount = $discounts[0];
+$featureBonus = $discounts[1];
 ?>
 <?php if (!empty($_SESSION)) : ?>
     <?php foreach ($_SESSION['errors'] as $error) : ?>
@@ -73,8 +77,8 @@ $features = getRoomFeatures($roomId, $database);
 </main>
 <div class="offers">
     <h4>Holiday offers!</h4>
-    <h5>Choose 2 features and save $2</h5>
-    <h5>Book 4 or more days and save $3</h5>
+    <h5>Choose <?= $featureBonus['amount'] ?> features and save $<?= $featureBonus['value'] ?></h5>
+    <h5>Book <?= $staytimeDiscount['amount'] ?> or more days and save $<?= $staytimeDiscount['value'] ?></h5>
 </div>
 <?php
 require 'views/footer.php';

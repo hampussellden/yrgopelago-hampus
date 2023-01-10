@@ -30,7 +30,12 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
 
     $monthStart = 1672531200; //unix for Jan 2023 start
     $unixDay = 86400; //seconds in a day
-    $discount = 0;
+    //Get discounts from database
+
+    $stmt = $database->query('SELECT * FROM discounts');
+    $discounts = $stmt->fetchAll();
+    $staytimeDiscount = $discounts[0];
+    $featureBonus = $discounts[1];
     //Will give us the exact day of the arrival in the form of an INT
     $arrivalDay = ((strtotime($_POST['arrival']) - $monthStart) / $unixDay) + 1;
     $departureDay = ((strtotime($_POST['departure']) - $monthStart) / $unixDay) + 1;
@@ -51,12 +56,13 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
         $featureCost = 0;
     }
     //Count the totalcost that the form should equal to.
-    if ($totalDaysSpent >= 4) {
-        $discount = $discount + 3;
+    //discount for long stays
+    if ($totalDaysSpent >= $staytimeDiscount['amount']) {
+        $discount = $discount + $staytimeDiscount['value'];
     }
-    // a discount for chosing 2 features
-    if (count($chosenFeatures) === 2) {
-        $discount = $discount + 2;
+    // a discount for chosing an amount of features
+    if (count($chosenFeatures) === $featureBonus['amount']) {
+        $discount = $discount + $featureBonus['value'];
     }
     //calculate the cost for the room
     $costPerDay = getRoomCost($roomId, $database);

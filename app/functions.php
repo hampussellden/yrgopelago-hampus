@@ -109,3 +109,9 @@ function getFeatureCost(array $chosenFeatures, PDO $database): int
     }
     return $featureCost;
 }
+function getDiscounts(PDO $database): array
+{
+    $stmt = $database->query('SELECT * FROM discounts');
+    $discounts = $stmt->fetchAll();
+    return $discounts;
+}
