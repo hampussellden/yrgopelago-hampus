@@ -1,7 +1,7 @@
 const imgSection = document.querySelector('section.images');
 const pageHref = window.location.href;
-// const websiteHostName = 'https://bosse.ai/neversummer/';
-const websiteHostName = 'http://localhost:4000/';
+const websiteHostName = 'https://bosse.ai/neversummer/';
+// const websiteHostName = 'http://localhost:4000/';
 
 if (
   pageHref === websiteHostName + 'index.php' ||
@@ -38,7 +38,6 @@ if (pageHref == websiteHostName) {
 }
 
 // Live cost calculator
-console.log(roomId);
 if (typeof roomId !== 'undefined') {
   const form = document.querySelector('form:not(.admin)');
   const arrival = document.querySelector('#arrival');
