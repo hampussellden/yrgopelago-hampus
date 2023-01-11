@@ -20,7 +20,9 @@
 
 <body>
     <div class="contents-container">
-        <header>
-            <h1>Neversummer Hotel</h1>
-        </header>
+        <a href="https://bosse.ai/neversummer/" style="text-decoration:none">
+            <header>
+                <h1>Neversummer Hotel</h1>
+            </header>
+        </a>
         <div class="main-wrapper">
