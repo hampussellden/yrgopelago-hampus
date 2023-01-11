@@ -1,18 +1,1 @@
-[
-  {
-    "id": 1,
-    "guest_id": 3,
-    "start_date": "2023-01-01",
-    "end_date": "2023-01-02",
-    "room_id": 1,
-    "transfer_code": "6001b9ec-e48e-4c28-a7d0-62a498b4a7be"
-  },
-  {
-    "id": 2,
-    "guest_id": 4,
-    "start_date": "2023-01-06",
-    "end_date": "2023-01-08",
-    "room_id": 1,
-    "transfer_code": "95aaf1bf-1f55-40b9-868e-fbb974dcab55"
-  }
-]
+[]

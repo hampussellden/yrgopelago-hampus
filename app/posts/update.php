@@ -82,12 +82,22 @@ if (isset($_POST['amountOfDays'], $_POST['discountDaysValue'])) {
     header('location: ' . $location);
     exit;
 }
-
+//remove bookings
 if (isset($_POST['bookings'])) {
     $ids = $_POST['bookings'];
     $ids = array_map('intval', $ids);
     foreach ($ids as $id) {
         $stmt = $database->prepare('DELETE FROM bookings WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+    foreach ($ids as $id) {
+        $stmt = $database->prepare('DELETE FROM booking_to_feature WHERE booking_id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+    foreach ($ids as $id) {
+        $stmt = $database->prepare('DELETE FROM booked_days WHERE booking_id = :id');
         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
     }
