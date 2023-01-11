@@ -36,6 +36,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     $discounts = $stmt->fetchAll();
     $staytimeDiscount = $discounts[0];
     $featureBonus = $discounts[1];
+    $discount = 0;
     //Will give us the exact day of the arrival in the form of an INT
     $arrivalDay = ((strtotime($_POST['arrival']) - $monthStart) / $unixDay) + 1;
     $departureDay = ((strtotime($_POST['departure']) - $monthStart) / $unixDay) + 1;

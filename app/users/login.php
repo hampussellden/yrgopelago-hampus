@@ -11,7 +11,8 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable('../../../neversummer/');
 $dotenv->load();
 
-$redirectLocation = 'https://bosse.ai/neversummer/admin.php';
+// $redirectLocation = 'https://bosse.ai/neversummer/admin.php';
+$redirectLocation = 'http://localhost:4000/admin.php';
 $_SESSION['errors'] = [];
 // In this file we login users.
 if (isset($_POST['username'], $_POST['password'])) {

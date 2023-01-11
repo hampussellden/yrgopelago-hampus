@@ -3,8 +3,9 @@ require 'app/autoload.php';
 require 'views/header.php';
 require 'vendor/autoload.php';
 require 'app/features.php';
+require 'app/events.php';
 require 'app/rooms.php';
-
+$bookings = json_decode(file_get_contents('app/posts/bookings.json'), true);
 ?>
 <?php if (isset($_SESSION['user'])) : ?>
     <h2 class="admin">Welcome <?= $_SESSION['user']['name'] ?></h2>
@@ -65,7 +66,18 @@ require 'app/rooms.php';
             <input class="submit-button" type="submit"></input>
         </form>
     </main>
-
+    <form class="admin bookings" action="app/posts/update.php" method="post">
+        <h3>Current bookings management</h3>
+        <p>Room ID | Arrival date -> Departure date | Guest ID</p>
+        <?php foreach ($bookings as $booking) : ?>
+            <div class="booking">
+                <p><?= '| ' . $booking['room_id'] . ' | ' . $booking['start_date'] . ' -> ' . $booking['end_date'] . ' | ' . $booking['guest_id'] . ' | ' ?></p>
+                <input type="checkbox" name="bookings[]" value="<?= $booking['id'] ?>" id="id<?= $booking['id'] ?>">
+                <label for="id<?= $booking['id'] ?>">Remove</label>
+            </div>
+        <?php endforeach ?>
+        <input class="submit-button" type="submit"></input>
+    </form>
 
 <?php else : ?>
     <h2 class="admin">Admin Login</h2>

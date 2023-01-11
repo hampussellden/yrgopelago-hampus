@@ -1,8 +1,9 @@
 form.admin div:first-child input {
-  width: 147px;
+  width: 100%;
 }
 form.admin {
   padding: 24px;
+  margin: 24px;
 }
 main.admin {
   display: grid;
@@ -12,5 +13,14 @@ main.admin {
 }
 h2.admin {
   text-align: center;
-  padding-top: 8px;
+  margin-top: 24px;
+}
+form.admin.bookings {
+  margin: 24px 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+form.bookings input:not(.submit-button) {
+  margin-left: 8px;
 }

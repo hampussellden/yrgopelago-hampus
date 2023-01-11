@@ -82,3 +82,15 @@ if (isset($_POST['amountOfDays'], $_POST['discountDaysValue'])) {
     header('location: ' . $location);
     exit;
 }
+
+if (isset($_POST['bookings'])) {
+    $ids = $_POST['bookings'];
+    $ids = array_map('intval', $ids);
+    foreach ($ids as $id) {
+        $stmt = $database->prepare('DELETE FROM bookings WHERE id = :id');
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+    header('location: ' . $location);
+    exit;
+}
