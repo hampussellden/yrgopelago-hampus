@@ -1,5 +1,6 @@
 form.admin div:first-child input {
   width: 100%;
+  max-width: 147px;
 }
 form.admin {
   padding: 24px;
