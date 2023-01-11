@@ -1,4 +1,4 @@
-![](https://media.giphy.com/media/CnLRoQneO2kWHuRg7g/giphy.gif)
+![](https://media.giphy.com/media/YczRJkWkGKy5i/giphy.gif)
 
 # Glacier Island
 
