@@ -60,7 +60,7 @@ $bookings = json_decode(file_get_contents('app/posts/bookings.json'), true);
                 <label for="discountAmountOfDays">How many days</label>
             </div>
             <div>
-                <input type="number" name="discountDaysValue" placeholder="discount Amount" id="discountDaysValue">
+                <input type="number" name="discountDaysValue" placeholder="discount Amount" id="discountDaysValue" step="0.01">
                 <label for="discountDaysValue">Discount amount</label>
             </div>
             <input class="submit-button" type="submit"></input>

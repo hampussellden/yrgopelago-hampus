@@ -115,3 +115,12 @@ function getDiscounts(PDO $database): array
     $discounts = $stmt->fetchAll();
     return $discounts;
 }
+function getStaytimeString(int|float $value): string
+{
+    if (is_float($value)) {
+        $value = 100 * $value;
+        return $value . '%';
+    } else {
+        return '$' . $value;
+    }
+}

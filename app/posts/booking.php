@@ -37,6 +37,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     $staytimeDiscount = $discounts[0];
     $featureBonus = $discounts[1];
     $discount = 0;
+    $discountMultiplier = 1;
     //Will give us the exact day of the arrival in the form of an INT
     $arrivalDay = ((strtotime($_POST['arrival']) - $monthStart) / $unixDay) + 1;
     $departureDay = ((strtotime($_POST['departure']) - $monthStart) / $unixDay) + 1;
@@ -57,18 +58,24 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
         $featureCost = 0;
     }
     //Count the totalcost that the form should equal to.
-    //discount for long stays
-    if ($totalDaysSpent >= $staytimeDiscount['amount']) {
-        $discount = $discount + $staytimeDiscount['value'];
-    }
-    // a discount for chosing an amount of features
-    if (count($chosenFeatures) === $featureBonus['amount']) {
-        $discount = $discount + $featureBonus['value'];
-    }
     //calculate the cost for the room
     $costPerDay = getRoomCost($roomId, $database);
+    //discount for long stays
+    if ($totalDaysSpent >= $staytimeDiscount['amount']) {
+        if (is_float($staytimeDiscount['value'])) {
+            $discountMultiplier = 1 - $staytimeDiscount['value'];
+            $percentageDiscount = (($totalDaysSpent * $costPerDay) + $featureCost) * $staytimeDiscount['value'];
+            //$percentageDiscount is just for show in the booking response JSON
+        } else {
+            $discount = $discount + $staytimeDiscount['value'];
+        }
+    }
+    // a discount for chosing an amount of features
+    if (count($chosenFeatures) >= $featureBonus['amount']) {
+        $discount = $discount + $featureBonus['value'];
+    }
     // calculate totalCost
-    $totalCost = (($totalDaysSpent * $costPerDay) + $featureCost) - $discount;
+    $totalCost = ((($totalDaysSpent * $costPerDay) + $featureCost) * $discountMultiplier) - $discount;
     //create an array to use when when filling our database with booked dates and to compare against already booked dates
     $countDay = $arrivalDay;
     $chosenDays = [];
@@ -205,7 +212,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
             'features' => [
                 $postFeatures
             ],
-            'additional_info' => 'You saved $' . $discount . ' with discounts'
+            'additional_info' => 'You saved $' . $percentageDiscount + $discount . ' with discounts'
         ];
         header('content-type: application/json');
         echo json_encode($bookingInfo);

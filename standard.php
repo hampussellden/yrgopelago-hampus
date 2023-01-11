@@ -77,8 +77,8 @@ $featureBonus = $discounts[1];
 </main>
 <div class="offers">
     <h4>Holiday offers!</h4>
-    <h5>Choose <?= $featureBonus['amount'] ?> features and save $<?= $featureBonus['value'] ?></h5>
-    <h5>Book <?= $staytimeDiscount['amount'] ?> or more days and save $<?= $staytimeDiscount['value'] ?></h5>
+    <h5>Choose <?= $featureBonus['amount'] ?> or more features and save $<?= $featureBonus['value'] ?></h5>
+    <h5>Book <?= $staytimeDiscount['amount'] ?> or more days and save <?= getStaytimeString($staytimeDiscount['value']) ?></h5>
 </div>
 <?php
 require 'views/footer.php';

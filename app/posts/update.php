@@ -73,10 +73,10 @@ if (isset($_POST['amountOfDays'], $_POST['discountDaysValue'])) {
     $amount = htmlspecialchars($_POST['amountOfDays']);
     $value = htmlspecialchars($_POST['discountDaysValue']);
 
-    $stmt = $database->prepare('UPDATE discounts SET amount = :amount, value = :value WHERE name=staytime');
+    $stmt = $database->prepare('UPDATE discounts SET amount = :amount, value = :value WHERE name="staytime"');
 
     $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
-    $stmt->bindParam(':value', $value, PDO::PARAM_INT);
+    $stmt->bindParam(':value', $value, PDO::PARAM_STR);
     $stmt->execute();
 
     header('location: ' . $location);
