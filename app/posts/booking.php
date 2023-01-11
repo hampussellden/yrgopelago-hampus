@@ -9,17 +9,7 @@ use GuzzleHttp\Client;
 $client = new Client();
 $_SESSION['errors'] = [];
 $roomId = (int)$_POST['roomId'];
-switch ($roomId) {
-    case 1:
-        $redirectLocation = '../../index.php';
-        break;
-    case 2:
-        $redirectLocation = '../../standard.php';
-        break;
-    case 3:
-        $redirectLocation = '../../luxury.php';
-        break;
-}
+$redirectLocation = setRedirectLocation($roomId);
 
 if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['arrival']) && !empty($_POST['departure'])) {
     //variables to be used
@@ -27,11 +17,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     $guestName = ucfirst(strtolower(htmlspecialchars(trim($_POST['name']), ENT_QUOTES)));
     $arrival = $_POST['arrival'];
     $departure = $_POST['departure'];
-
-    $monthStart = 1672531200; //unix for Jan 2023 start
-    $unixDay = 86400; //seconds in a day
     //Get discounts from database
-
     $stmt = $database->query('SELECT * FROM discounts');
     $discounts = $stmt->fetchAll();
     $staytimeDiscount = $discounts[0];
@@ -39,17 +25,13 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     $discount = 0;
     $percentageDiscount = 0;
     $discountMultiplier = 1;
-    //Will give us the exact day of the arrival in the form of an INT
-    $arrivalDay = ((strtotime($_POST['arrival']) - $monthStart) / $unixDay) + 1;
-    $departureDay = ((strtotime($_POST['departure']) - $monthStart) / $unixDay) + 1;
-    $totalDaysSpent = ($departureDay - $arrivalDay) + 1;
+    //getTotalDaysSpent
+    $totalDaysSpent = getTotalDaysSpent($arrival, $departure);
     if ($totalDaysSpent < 1) {
         $message = 'Invalid date input';
-        array_push($_SESSION['errors'], $message);
-        header('location: ' . $redirectLocation);
-        exit;
+        redirectUser($message, $redirectLocation);
     }
-    //Get info about the cosen features
+    //Get info about the chosen features
     if (!empty($_POST['features'])) {
         $chosenFeatures = $_POST['features'];
         $chosenFeatures = array_map('intval', $chosenFeatures);
@@ -78,12 +60,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     // calculate totalCost
     $totalCost = ((($totalDaysSpent * $costPerDay) + $featureCost) * $discountMultiplier) - $discount;
     //create an array to use when when filling our database with booked dates and to compare against already booked dates
-    $countDay = $arrivalDay;
-    $chosenDays = [];
-    do {
-        $chosenDays[] = $countDay;
-        $countDay++;
-    } while ($countDay <= $departureDay);
+    $chosenDays = getCountDayArray($arrival, $departure);
 
     //Check dates so that the dates are available
     $stmt = $database->prepare('SELECT day_of_month FROM booked_days where room_id=:room_id');
@@ -100,9 +77,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     $matchingDates = array_intersect($chosenDays, $bookedDays);
     if (!empty($matchingDates)) {
         $message = 'A date you have chosen is already booked by someone else';
-        array_push($_SESSION['errors'], $message);
-        header('location: ' . $redirectLocation);
-        exit;
+        redirectUser($message, $redirectLocation);
     }
     //check if a transfercode is legit and not used
     try {
@@ -125,9 +100,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
             $codeCheck = true;
         } else {
             $message = 'The transfercode submited was not valid';
-            array_push($_SESSION['errors'], $message);
-            header('location: ' . $redirectLocation);
-            exit;
+            redirectUser($message, $redirectLocation);
         }
     } catch (Exception $e) {
         echo 'something went wrong with the transfer code check';
@@ -154,15 +127,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
         }
 
         //Prepare statement to add the new booking to SQLite database
-        $stmt = $database->prepare('INSERT INTO bookings (guest_id, start_date, end_date, room_id, transfer_code)
-        VALUES (:guest_id, :start_date, :end_date, :room_id, :transfer_code);
-        ');
-        $stmt->bindParam(':guest_id', $guestId, PDO::PARAM_INT);
-        $stmt->bindParam(':start_date', $arrival, PDO::PARAM_STR);
-        $stmt->bindParam(':end_date', $departure, PDO::PARAM_STR);
-        $stmt->bindParam(':room_id', $roomId, PDO::PARAM_INT);
-        $stmt->bindParam(':transfer_code', $validCode, PDO::PARAM_STR);
-        $stmt->execute();
+        addToBookings($guestId, $arrival, $departure, $roomId, $validCode, $database);
 
         //Get the booking id of the booking we just created
         $stmt = $database->prepare('SELECT id FROM bookings where transfer_code=:transfer_code');
@@ -220,7 +185,5 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     }
 } else {
     $message = 'Form was not filled in correctly';
-    array_push($_SESSION['errors'], $message);
-    header('location: ' . $redirectLocation);
-    exit;
+    redirectUser($message, $redirectLocation);
 }

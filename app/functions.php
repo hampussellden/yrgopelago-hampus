@@ -50,11 +50,6 @@ function isValidUuid(string $uuid): bool
     }
     return true;
 }
-function redirect(string $path)
-{
-    header("Location: " . $path);
-    exit;
-}
 function getRoomFeatures(int $roomId, PDO $database): array
 {
     $stmt = $database->prepare('SELECT * FROM features where room_id=:room_id');
@@ -123,4 +118,62 @@ function getStaytimeString(int|float $value): string
     } else {
         return '$' . $value;
     }
+}
+
+function getTotalDaysSpent(string $arrival, string $departure): int
+{
+    $monthStart = 1672531200; //unix for Jan 2023 start
+    $unixDay = 86400; //seconds in a day
+    //Will give us the exact day of the arrival in the form of an INT
+    $arrivalDay = ((strtotime($arrival) - $monthStart) / $unixDay) + 1;
+    $departureDay = ((strtotime($departure) - $monthStart) / $unixDay) + 1;
+    $totalDaysSpent = ($departureDay - $arrivalDay) + 1;
+    return $totalDaysSpent;
+}
+function getCountDayArray(string $arrival, string $departure): array
+{
+    $monthStart = 1672531200; //unix for Jan 2023 start
+    $unixDay = 86400; //seconds in a day
+    $startDay = ((strtotime($arrival) - $monthStart) / $unixDay) + 1;
+    $endDay = ((strtotime($departure) - $monthStart) / $unixDay) + 1;
+    $chosenDays = [];
+    do {
+        $chosenDays[] = $startDay;
+        $startDay++;
+    } while ($startDay <= $endDay);
+    return $chosenDays;
+}
+function setRedirectLocation(int $roomId): string
+{
+    switch ($roomId) {
+        case 1:
+            $redirectLocation = '../../index.php';
+            break;
+        case 2:
+            $redirectLocation = '../../standard.php';
+            break;
+        case 3:
+            $redirectLocation = '../../luxury.php';
+            break;
+    }
+    return $redirectLocation;
+}
+function redirectUser(string $message, string $location)
+{
+    array_push($_SESSION['errors'], $message);
+    header('location: ' . $location);
+    exit;
+}
+
+function addToBookings(int $guestId, string $arrival, string $departure, int $roomId, string $validCode, PDO $database)
+{
+    $stmt = $database->prepare('INSERT INTO bookings (guest_id, start_date, end_date, room_id, transfer_code)
+    VALUES (:guest_id, :start_date, :end_date, :room_id, :transfer_code);
+    ');
+    $stmt->bindParam(':guest_id', $guestId, PDO::PARAM_INT);
+    $stmt->bindParam(':start_date', $arrival, PDO::PARAM_STR);
+    $stmt->bindParam(':end_date', $departure, PDO::PARAM_STR);
+    $stmt->bindParam(':room_id', $roomId, PDO::PARAM_INT);
+    $stmt->bindParam(':transfer_code', $validCode, PDO::PARAM_STR);
+    $stmt->execute();
 }
