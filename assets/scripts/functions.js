@@ -61,27 +61,85 @@ const getCheckboxStatus = (features, roomId) => {
   }
   return cost;
 };
+const countCheckboxes = (features, roomId) => {
+  const offers = features.filter((d) => d.room_id == roomId);
 
-const getDayCosts = (roomCost, departure, arrival) => {
+  // const feature1 = document.getElementById(offers[0]['name']).checked;
+  if (document.getElementById(offers[0]['name']).checked) {
+    feature1check = true;
+  } else {
+    feature1check = false;
+  }
+
+  if (document.getElementById(offers[1]['name']).checked) {
+    feature2check = true;
+  } else {
+    feature2check = false;
+  }
+  if (document.getElementById(offers[2]['name']).checked) {
+    feature3check = true;
+  } else {
+    feature3check = false;
+  }
+
+  var count = 0;
+  if (feature1check) {
+    count++;
+  }
+  if (feature2check) {
+    count++;
+  }
+  if (feature3check) {
+    count++;
+  }
+  return count;
+};
+const countDays = (departure, arrival) => {
   const departureDate = departure.value.split('-');
   const arrivalDate = arrival.value.split('-');
   const departureDay = departureDate[2];
   const arrivalDay = arrivalDate[2];
-  const minDay = 1;
-  const totalDays = Number(departureDay) - Number(arrivalDay);
-  const cost = roomCost * (totalDays + minDay);
+  const days = Number(departureDay) - Number(arrivalDay);
+  const totalDays = days + 1;
+  return totalDays;
+};
+const getDayCosts = (roomCost, departure, arrival) => {
+  const totalDays = countDays(departure, arrival);
+  const cost = roomCost * totalDays;
   return cost;
+};
+const getDiscountsPercent = (totalDays) => {
+  if (totalDays >= 4) {
+    return 0.8;
+  } else {
+    return 1;
+  }
+};
+const getDiscountsInteger = (features, roomId) => {
+  if (countCheckboxes(features, roomId) >= 2) {
+    return 2;
+  } else {
+    return 0;
+  }
 };
 const currentPrice = document.querySelector('h3.current-price');
 
-const updateLiveCost = (featureCost, daysCosts) => {
-  const totalCost = featureCost + daysCosts;
-  currentPrice.innerHTML = `current booking: $${totalCost}`;
+const updateLiveCost = (
+  featureCost,
+  daysCosts,
+  discountPercent,
+  discountInteger
+) => {
+  const totalCost =
+    (featureCost + daysCosts) * discountPercent - discountInteger;
+  currentPrice.innerHTML = `current booking: $${totalCost.toFixed(2)}`;
 };
 
 const calculateForm = (features, roomCost, departure, arrival) => {
   updateLiveCost(
     getCheckboxStatus(features, roomId),
-    getDayCosts(roomCost, departure, arrival)
+    getDayCosts(roomCost, departure, arrival),
+    getDiscountsPercent(countDays(departure, arrival)),
+    getDiscountsInteger(features, roomId)
   );
 };

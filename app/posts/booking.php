@@ -37,6 +37,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     $staytimeDiscount = $discounts[0];
     $featureBonus = $discounts[1];
     $discount = 0;
+    $percentageDiscount = 0;
     $discountMultiplier = 1;
     //Will give us the exact day of the arrival in the form of an INT
     $arrivalDay = ((strtotime($_POST['arrival']) - $monthStart) / $unixDay) + 1;
@@ -196,7 +197,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
     if ($bookingMade === true) {
         $islandName = 'Glacier Island';
         $hotelName = 'Neversummer hotel';
-        $stars = 4;
+        $stars = 5;
         $postFeatures = [];
         foreach ($chosenFeatures as $feature) {
             $postFeatures[] = getChosenFeatures($feature, $database);
@@ -207,7 +208,7 @@ if (!empty($_POST['transferCode']) && !empty($_POST['name']) && !empty($_POST['a
             'hotel' => $hotelName,
             'arrival_date' => $arrival,
             'departure_date' => $departure,
-            'total_cost' => $totalCost,
+            'total_cost' => round($totalCost, 2),
             'stars' => $stars,
             'features' => [
                 $postFeatures

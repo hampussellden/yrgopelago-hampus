@@ -46,7 +46,7 @@ const features = [
 ];
 
 const rooms = [
-  { id: 1, room__name: 'budget', cost_per_day: 2 },
-  { id: 2, room__name: 'standard', cost_per_day: 4 },
-  { id: 3, room__name: 'luxury', cost_per_day: 8 },
+  { id: 1, room__name: 'budget', cost_per_day: 4 },
+  { id: 2, room__name: 'standard', cost_per_day: 6 },
+  { id: 3, room__name: 'luxury', cost_per_day: 10 },
 ];

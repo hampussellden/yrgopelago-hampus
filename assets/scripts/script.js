@@ -1,16 +1,24 @@
 const imgSection = document.querySelector('section.images');
 const pageHref = window.location.href;
-const websiteHostName = 'https://bosse.ai/neversummer/';
-// const websiteHostName = 'http://localhost:4000/';
+// const websiteHostName = 'https://bosse.ai/neversummer/';
+const websiteHostName = 'http://localhost:4000/';
 
-let roomId = 1;
-if (pageHref == websiteHostName + 'standard.php') {
-  roomId = 2;
-} else if (pageHref == websiteHostName + 'luxury.php') {
-  roomId = 3;
+if (
+  pageHref === websiteHostName + 'index.php' ||
+  pageHref === websiteHostName
+) {
+  var roomId = 1;
+  getImages(roomId);
+  getImages(roomId);
+} else if (pageHref === websiteHostName + 'standard.php') {
+  var roomId = 2;
+  getImages(roomId);
+  getImages(roomId);
+} else if (pageHref === websiteHostName + 'luxury.php') {
+  var roomId = 3;
+  getImages(roomId);
+  getImages(roomId);
 }
-getImages(roomId);
-getImages(roomId);
 
 const navItems = document.querySelectorAll('li.navbar-item');
 const navLinks = document.querySelectorAll('a.nav-link');
@@ -30,12 +38,14 @@ if (pageHref == websiteHostName) {
 }
 
 // Live cost calculator
-const form = document.querySelector('form');
-const arrival = document.querySelector('#arrival');
-const departure = document.querySelector('#departure');
+console.log(roomId);
+if (typeof roomId !== 'undefined') {
+  const form = document.querySelector('form:not(.admin)');
+  const arrival = document.querySelector('#arrival');
+  const departure = document.querySelector('#departure');
+  const roomCost = getRoomCost(roomId);
 
-const roomCost = getRoomCost(roomId);
-
-form.addEventListener('change', () =>
-  calculateForm(features, roomCost, departure, arrival)
-);
+  form.addEventListener('change', () =>
+    calculateForm(features, roomCost, departure, arrival)
+  );
+}
