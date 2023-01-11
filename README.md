@@ -22,7 +22,7 @@ The API is available at `https://bosse.ai/neversummer/api/bookings` Responses ar
 
 | key          | value    | description                   | input                     |
 | ------------ | -------- | ----------------------------- | ------------------------- |
-| transferCode | code     | 123-4567-8901-2345-678        | 123-4567-8901-2345-678    |
+| transferCode | code     | 123-4567-8901-2345-678        | 'transferCode': 'code'    |
 | name         | username | john                          | 'name’: ‘username’        |
 | arrival      | date     | yyyy-mm-dd                    | ‘arrival’: ‘2023-01-01’   |
 | departure    | date     | yyyy-mm-dd                    | 'departure': '2023-01-31' |
