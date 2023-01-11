@@ -12,7 +12,7 @@ $dotenv->load();
 
 $redirectLocation = 'https://bosse.ai/neversummer/admin.php';
 //while testing use below location instead
-$redirectLocation = 'http://localhost:4000/admin.php';
+// $redirectLocation = 'http://localhost:4000/admin.php';
 $_SESSION['errors'] = [];
 // In this file we login users.
 if (isset($_POST['username'], $_POST['password'])) {
