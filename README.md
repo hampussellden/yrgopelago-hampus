@@ -45,9 +45,9 @@ The API is available at `https://bosse.ai/neversummer/api/bookings` Responses ar
 
 # Code review
 
-1. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-2. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-3. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
+1. budget/standard/luxury.php - There's a lot of repetition of code between these files, you could write a function that to write all three with different parameters for the diffeences.
+2. everything - Your code is to good for my mushy wednesday night brain to find feedback to give, do worse please.
+3. everything - More consistent comments would help readability.
 4. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
 5. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
 6. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
