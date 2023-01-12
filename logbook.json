@@ -1,29 +1,245 @@
-{
-  "vacation": [
-    {
-      "island": "Anthrax island",
-      "hotel": "Budget hostel",
-      "arrival_date": "2023-01-01",
-      "departure_date": "2023-01-04",
-      "total_cost": "8",
-      "stars": "2",
-      "features": [{ "name": "Fruit basket for vitamin C", "cost": 1 }],
-      "addtional_info": "Thank you for saving a buck at Budget hostel."
-    },
-    {
-      "island": "Isla Bellevue",
-      "hotel": "Grand central Hotel",
-      "arrival_date": "2023-01-05",
-      "departure_date": "2023-01-08",
-      "total_cost": "11",
-      "stars": "3",
-      "features": [{ "name": "Pinball machine", "cost": 3 }],
-      "addtional_info": [
-        {
-          "greeting": "Thank you for choosing Centralhotellet",
-          "video": "https://www.youtube.com/watch?v=5Ym-k30X5PY"
-        }
-      ]
+[
+  {
+    "island": "Eldoon Isle",
+    "hotel": "Itsakon Hotel",
+    "arrival_date": "2023-01-24",
+    "departure_date": "2023-01-27",
+    "total_cost": "15.2",
+    "stars": 4,
+    "features": null,
+    "addtional_info": "Thanks for staying at Itsakon Hotel"
+  },
+  {
+    "island": "Isla de los Monos",
+    "hotel": "Overwater Resort",
+    "arrival_date": "2023-01-20",
+    "departure_date": "2023-01-23",
+    "total_cost": 2,
+    "stars": "2",
+    "features": null,
+    "additional_info": "Thank you for choosing Overwater Resort."
+  },
+  {
+    "island": "Point Nemo",
+    "hotel": "The Good Morrow",
+    "arrival_date": "2023-01-01",
+    "departure_date": "2023-01-04",
+    "total_cost": "12$",
+    "stars": 5,
+    "features": [
+      {
+        "name": "Poetry Waking",
+        "cost": 3
+      }
+    ],
+    "additional_info": {
+      "message": "Very good. Enjoy your stay. But not too much, you might never leave."
     }
-  ]
-}
+  },
+  {
+    "island": "Isla Rublar",
+    "hotel": "Dino Resort",
+    "arrival_date": "2023-01-05",
+    "departure_date": "2023-01-08",
+    "total_cost": "3",
+    "stars": 1,
+    "addtional_info": "At least Ruben, the hotel owner, had a blast this Christmas."
+  },
+  {
+    "island": "Dirt Cheap Island",
+    "hotel": "The Very Average Island Inn",
+    "arrival_date": "2023-01-15",
+    "departure_date": "2023-01-22",
+    "total_cost": 12,
+    "stars": "3",
+    "features": [
+      {
+        "name": "baseballbat",
+        "cost": 1
+      },
+      {
+        "name": "vaccination",
+        "cost": 2
+      },
+      {
+        "name": "minibar",
+        "cost": 3
+      }
+    ],
+    "additional_info": "Thank you for staying at this very average hotel."
+  },
+  {
+    "island": "Point Nemo",
+    "hotel": "The Good Morrow",
+    "arrival_date": "2023-01-28",
+    "departure_date": "2023-01-31",
+    "total_cost": "14$",
+    "stars": 5,
+    "features": [
+      {
+        "name": "Poem",
+        "cost": 5
+      }
+    ],
+    "additional_info": {
+      "message": "Very good. Enjoy your stay. But not too much, you might never leave.",
+      "poem": "Jag föddes sent på jorden\n        Vilken fantastisk tur\n        Jag lever nu\n        Men ändå mest\n        I det förgångna"
+    }
+  },
+  {
+    "island": "Altis",
+    "hotel": "Crown Mountain Hotel",
+    "arrival_date": "2023-01-09",
+    "departure_date": "2023-01-14",
+    "total_cost": 26,
+    "stars": "5",
+    "features": [
+      {
+        "feature": "breakfust",
+        "cost": 3
+      },
+      {
+        "feature": "minibar",
+        "cost": 3
+      },
+      {
+        "feature": "guided tour",
+        "cost": 5
+      }
+    ],
+    "additional_info": "Thank you for staying at Crown Mountain Hotel"
+  },
+  {
+    "island": "Eldoon Isle",
+    "hotel": "Itsakon Hotel",
+    "arrival_date": "2023-01-9",
+    "departure_date": "2023-01-11",
+    "total_cost": "39.54",
+    "stars": 4,
+    "features": {
+      "1": {
+        "name": "Megafridge",
+        "cost": "2"
+      },
+      "2": {
+        "name": "Afternoon Breakfast",
+        "cost": "2"
+      },
+      "3": {
+        "name": "Midnight Lunch",
+        "cost": "2"
+      },
+      "4": {
+        "name": "Soy Dinner",
+        "cost": "2"
+      },
+      "5": {
+        "name": "Challenge Spa",
+        "cost": "1"
+      },
+      "6": {
+        "name": "Boiling Pool",
+        "cost": "1"
+      },
+      "7": {
+        "name": "Cold Sauna",
+        "cost": "1"
+      },
+      "8": {
+        "name": "Guided pogostick tour",
+        "cost": "1"
+      },
+      "9": {
+        "name": "Rent Bike",
+        "cost": "0.5"
+      },
+      "10": {
+        "name": "Rent Car",
+        "cost": "0.5"
+      },
+      "11": {
+        "name": "Trampass",
+        "cost": "0.5"
+      },
+      "12": {
+        "name": "Buscard",
+        "cost": "0.5"
+      },
+      "13": {
+        "name": "Trainticket",
+        "cost": "0.5"
+      },
+      "14": {
+        "name": "Bungyjumping",
+        "cost": "0.5"
+      },
+      "15": {
+        "name": "Cliff Diving",
+        "cost": "0.25"
+      },
+      "16": {
+        "name": "Wingsuit",
+        "cost": "0.25"
+      },
+      "17": {
+        "name": "Parapente",
+        "cost": "0.25"
+      },
+      "18": {
+        "name": "Parachute",
+        "cost": "0.25"
+      },
+      "19": {
+        "name": "Morning Yoga",
+        "cost": "0.25"
+      },
+      "20": {
+        "name": "Afternoon Tea",
+        "cost": "0.25"
+      },
+      "21": {
+        "name": "Second Breakfast",
+        "cost": "0.25"
+      },
+      "22": {
+        "name": "Gym Access",
+        "cost": "0.25"
+      },
+      "23": {
+        "name": "PT",
+        "cost": "0.25"
+      },
+      "24": {
+        "name": "Athletics Arena",
+        "cost": "0.25"
+      },
+      "25": {
+        "name": "Tennis Court",
+        "cost": "0.25"
+      },
+      "26": {
+        "name": "Escape Room",
+        "cost": "0.25"
+      },
+      "27": {
+        "name": "Break in room",
+        "cost": "0.25"
+      },
+      "28": {
+        "name": "Cookie",
+        "cost": "0.25"
+      }
+    },
+    "addtional_info": "Thanks for staying at Itsakon Hotel"
+  },
+  {
+    "island": "Eldoon Isle",
+    "hotel": "Itsakon Hotel",
+    "arrival_date": "2023-01-16",
+    "departure_date": "2023-01-31",
+    "total_cost": null,
+    "stars": 4,
+    "features": null,
+    "addtional_info": "Thanks for staying at Itsakon Hotel"
+  }
+]
