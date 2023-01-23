@@ -2,7 +2,8 @@
   "require": {
     "benhall14/php-calendar": "^1.4",
     "vlucas/phpdotenv": "^5.5",
-    "guzzlehttp/guzzle": "^7.0"
+    "guzzlehttp/guzzle": "^7.5",
+    "guzzle/guzzle": "^3.9"
   },
   "config": {
     "platform-check": false
