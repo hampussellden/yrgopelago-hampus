@@ -10,6 +10,17 @@ $total_cost = 0;
 $features = [];
 $starRatings = [];
 
+function printFeaturesAsUL($target, $withColums = false)
+{
+    if (isset($target[0]['name'])) {
+        echo ($withColums === true) ? '<ul column-count="4">' : '<ul>';
+        foreach ($target as $key) {
+            echo '<li>' . $key['name'] . '</li>';
+        }
+        echo '</ul>';
+    }
+}
+
 ?>
 
 <h2 class="admin">Logbook</h2>
@@ -19,7 +30,6 @@ $starRatings = [];
     <?php foreach ($logbookContentJson as $log) : ?>
 
         <?php
-        $feat = [];
         //get additional info as string
         if ($log['additional_info'] !== null) {
             $additional_info = (gettype($log['additional_info']) === 'string') ? $log['additional_info'] : implode(' ', $log['additional_info']);
@@ -30,8 +40,7 @@ $starRatings = [];
         array_push($starRatings, $log['stars']);
 
         foreach ($log['features'] as $feature) {
-            array_push($feat, $feature['name']);
-            array_push($features, $feature['name']);
+            array_push($features, $feature);
         }
         ?>
 
@@ -42,9 +51,7 @@ $starRatings = [];
             <p>departure_date: <?= $log['departure_date'] ?></p>
             <p>stars: <?= $log['stars'] ?></p>
             <p>Features: </p>
-            <ul>
-                <?= implode('<li>', $feat) . '</li>' ?>
-            </ul>
+            <?php printFeaturesAsUL($log['features']); ?>
 
             <p>additional_info: <?= $additional_info ?></p>
 
@@ -58,19 +65,22 @@ $starRatings = [];
 
     <?php
 
+    $featureNames = [];
+    foreach ($features as $feature) {
+        array_push($featureNames, $feature['name']);
+    }
+
     $avgStarRating = floor((array_sum($starRatings) / count($starRatings)));
-    $val = array_count_values($features);
+    $val = array_count_values($featureNames);
     arsort($val);
     $mostUsedFeature = array_slice(array_keys($val), 0, 1, true);
     ?>
 
     <h2>Facts</h2>
-    <p>Total cost: <?= $total_cost ?>$</p>
-    <p>AVG Star Rating: <?= $avgStarRating ?></p>
+    <p><b>Total cost:</b> <?= $total_cost ?>$</p>
+    <p><b>AVG Star Rating:</b> <?= $avgStarRating ?></p>
     <h3>Used Features</h3>
-    <ul style="columns: 4;">
-        <?= implode('<li>', $features) . '</li>' ?>
-    </ul>
+    <?php printFeaturesAsUL($features, true) ?>
     <h3>Most Used Feature</h3>
     <?= $mostUsedFeature[0] ?>
 </div>
