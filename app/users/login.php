@@ -7,10 +7,10 @@ require '../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable('../../../neversummer/');
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
 $dotenv->load();
 
-$redirectLocation = 'https://bosse.ai/neversummer/admin.php';
+$redirectLocation = __DIR__ . '/admin.php';
 //while testing use below location instead
 // $redirectLocation = 'http://localhost:4000/admin.php';
 $_SESSION['errors'] = [];

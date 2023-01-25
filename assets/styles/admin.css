@@ -2,7 +2,8 @@ form.admin div:first-child input {
   width: 100%;
   max-width: 147px;
 }
-form.admin {
+form.admin,
+div.admin {
   padding: 24px;
   margin: 24px;
 }
@@ -16,7 +17,8 @@ h2.admin {
   text-align: center;
   margin-top: 24px;
 }
-form.admin.bookings {
+form.admin.bookings,
+div.admin.bookings {
   margin: 24px 88px;
   display: flex;
   flex-direction: column;

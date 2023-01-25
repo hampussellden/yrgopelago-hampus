@@ -79,6 +79,11 @@ $bookings = json_decode(file_get_contents('app/posts/bookings.json'), true);
         <input class="submit-button" type="submit"></input>
     </form>
 
+    <form class="admin bookings" action="log.php" method="post">
+        <h3>Check The Log</h3>
+        <input class="submit-button" type="submit"></input>
+    </form>
+
 <?php else : ?>
     <h2 class="admin">Admin Login</h2>
     <?php if (!empty($_SESSION)) : ?>
